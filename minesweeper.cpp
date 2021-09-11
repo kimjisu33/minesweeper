@@ -6,7 +6,7 @@ int main() {
 	GameBase game;
 	//game.showBase();
 	game.showGameBoard();
-
+	 
 	return 0;
 }
 
