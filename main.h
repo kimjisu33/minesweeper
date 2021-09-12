@@ -47,10 +47,12 @@ public:
 class GameBase {
 	int **base;//배경 배열
 	int mine; //지뢰개수
+	int countMine(int i, int j);
 public:
 	GameBase();
 	~GameBase();
 	void showBase();
 	void showGameBoard();
+	void gameStart();
 };
 

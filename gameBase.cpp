@@ -7,24 +7,29 @@ GameBase::GameBase() {
 	for (int i = 0; i < PLAY1 + 2; i++) {
 		base[i] = new int[PLAY1 + 2];
 	}
-
-	for (int i = 0; i < PLAY1 + 2; i++) {
+	for (int i = 0; i < PLAY1 + 2; i++) { //배열 초기화
 		for (int j = 0; j < PLAY1 + 2; j++) {
-			if (i == 0 || i == PLAY1 + 1 || j == 0 || j == PLAY1 + 1) base[i][j] = 3;
+			if (i == 0 || i == PLAY1 + 1 || j == 0 || j == PLAY1 + 1) base[i][j] = 3; //벽
 			else base[i][j] = 0;
 		}
 	}
 
-	int i = 0;
-	while (i < mine) {
+	//지뢰 생성
+	int cnt = 0;
+	while (cnt < mine) { 
 		int a = rand() % PLAY1 + 1; //1~10
 		int b = rand() % PLAY1 + 1; //1~10
 
-		//지뢰생성
 		if (base[a][b] == 1 || base[a][b] == 3) continue;
 		else {
 			base[a][b] = 1;
-			i++;
+			cnt++;
+		}
+	}
+
+	for (int i = 0; i < PLAY1 + 1; i++) {
+		for (int j = 0; j < PLAY1 + 1; j++) {
+			
 		}
 	}
 
@@ -60,4 +65,10 @@ void GameBase::showGameBoard() {
 		}
 		cout << endl;
 	}
+}
+
+void GameBase::gameStart(){}
+
+int GameBase::countMine(int i, int j) {
+	return 0;
 }
