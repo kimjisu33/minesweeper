@@ -1,7 +1,8 @@
 #include "main.h"
 
 void init() {
-	system("mode con cols=84 lines=36 | title Áö·ÚÃ£±â");
+	//system("mode con cols=84 lines=36 | title Áö·ÚÃ£±â");
+	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
 
 	HANDLE consoleHandel = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO ConsoleCursor;
@@ -14,7 +15,7 @@ void init() {
 void gotoxy(int x, int y) {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD pos;
-	pos.X = x;
+	pos.X = x*2;
 	pos.Y = y;
 	SetConsoleCursorPosition(consoleHandle, pos);
 }

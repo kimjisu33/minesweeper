@@ -23,9 +23,12 @@ void gotoxy(int, int);
 #define PLAY1 14
 #define PLAY1_mine 20
 //2인용 15*20 75개
-#define PLAY2_X 15
-#define PLAY2_Y 20
+#define PLAY2_col 15
+#define PLAY2_row 20
 #define PLAY2_mine 75
+
+#define MINE 9
+#define WALL 10
 
 int keyControl(); //키보드
 void titleDraw(); //타이틀 그리기
@@ -34,20 +37,24 @@ void infoDraw(short player); //게임  설명
 void gameStart(short player); //게임 화면
 void setColor(int color, int bgcolor);
 
+/*
 class player {
-	//몇인용인지
+	short player_n;//몇인용인지
 	int x; //플레이어의 x좌표
 	int y; //플레이어의 y좌표
 	int life; //남은 목숨 (1인용 : 1개 / 2인용 : 2개)
-	int around_mine_cnt; //주변 지뢰 수
-	bool flag_cnt;//깃발 개수
+	//bool flag_cnt;//깃발 개수
 public:
-};
+	player(int);
+};*/
 
 class GameBase {
 	int **base;//배경 배열
 	int mine; //지뢰개수
-	int countMine(int i, int j);
+	void countMine(int, int );
+
+	int p_x;
+	int p_y;
 public:
 	GameBase();
 	~GameBase();
