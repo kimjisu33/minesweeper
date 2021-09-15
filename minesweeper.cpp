@@ -5,8 +5,9 @@ int main() {
 	srand((unsigned)time(0));
 	GameBase game;
 	//game.showBase();
-	game.showGameBoard();
-	 
+	//game.showGameBoard();
+	game.gameStart();
+
 	return 0;
 }
 

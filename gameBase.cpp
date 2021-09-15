@@ -74,13 +74,9 @@ void GameBase::showGameBoard() {
 		}
 		cout << endl;
 	}
-
-	gotoxy(31, 11);
-	cout << "△";
 	
 }
 
-void GameBase::gameStart(){}
 
 void GameBase::countMine(int m_i, int m_j) {
 	for (int i = m_i - 1; i <= m_i + 1; i++) {
@@ -89,4 +85,41 @@ void GameBase::countMine(int m_i, int m_j) {
 			base[i][j]++;
 		}
 	}
+}
+
+void GameBase::movePlayer() {
+
+	gotoxy(p_x, p_y);
+	cout << "□";
+	while (1) {
+		int n = keyControl();
+		switch (n)
+		{
+		case W: {
+			if (p_x > 20) { //20보다 작으면 안움직임
+				
+			}
+			break;
+		}
+		case S: {
+			 if (p_y < 22) { //22보다 크면 안움직임
+
+			}
+			break;
+		}
+		case SPACE: {
+
+		}
+		case ENTER: {
+
+		}
+		default: {}
+		}
+
+	}
+}
+
+void GameBase::gameStart() {
+	showGameBoard();
+	movePlayer();
 }

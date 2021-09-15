@@ -1,20 +1,6 @@
 #include"main.h"
 
-int keyControl() {
-	char temp = _getch();
 
-	switch (temp) {
-	case 'w':case'W': return W;
-	case 'a':case'A': return A;
-	case 's':case'S': return S;
-	case 'd':case'D': return D;
-	case 13: return ENTER;
-	case 32: return SPACE;
-	case 16: return SHIFT;
-	}
-
-	return 0;
-}
 
 void titleDraw() {
 	gotoxy(32, 10);
@@ -151,9 +137,6 @@ void gameStart(short player) {
 	else if (player == 2) {
 		cout << "2인용 게임 화면~" << endl;
 	}*/
-
-	GameBase game;
-	game.showBase();
 
 	cout << "enter 또는 space를 누르면 돌아갑니다." << endl;
 

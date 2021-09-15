@@ -25,3 +25,19 @@ void setColor(int color, int bgcolor) {
 	bgcolor &= 0xf;
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (bgcolor << 4) | color);
 }
+
+int keyControl() {
+	char temp = _getch();
+
+	switch (temp) {
+	case 'w':case'W': return W;
+	case 'a':case'A': return A;
+	case 's':case'S': return S;
+	case 'd':case'D': return D;
+	case 13: return ENTER;
+	case 32: return SPACE;
+	case 16: return SHIFT;
+	}
+
+	return 0;
+}
