@@ -139,9 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="menu.cpp" />
     <ClCompile Include="gameBase.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="minesweeper.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>

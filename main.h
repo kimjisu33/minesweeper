@@ -61,7 +61,7 @@ class GameBase {
 public:
 	GameBase();
 	~GameBase();
-	void showBase();
+	void showBase(); //배경 값 보기
 	
 	void gameStart();
 };

@@ -89,6 +89,8 @@ void GameBase::countMine(int m_i, int m_j) {
 
 void GameBase::movePlayer() {
 
+	int i = 1, j = 1;
+
 	gotoxy(p_x, p_y); //31, 11
 	cout << "□";
 	while (1) {
@@ -101,6 +103,7 @@ void GameBase::movePlayer() {
 				cout << "■";
 				gotoxy(p_x, --p_y);
 				cout << "□";
+				i--;
 			}
 			break;
 		}
@@ -110,6 +113,7 @@ void GameBase::movePlayer() {
 				 cout << "■";
 				 gotoxy(p_x, ++p_y);
 				 cout << "□";
+				 i++;
 			}
 			break;
 		}
@@ -119,6 +123,7 @@ void GameBase::movePlayer() {
 				cout << "■";
 				gotoxy(++p_x, p_y);
 				cout << "□";
+				j++;
 			}
 			break;
 		}
@@ -128,13 +133,64 @@ void GameBase::movePlayer() {
 				cout << "■";
 				gotoxy(--p_x, p_y);
 				cout << "□";
+				j--;
 			}
 			break;
 		}
-		case SPACE: {
-			
-		}
 		case ENTER: {
+			switch (base[i][j]) {
+			case 0: {
+				gotoxy(p_x, p_y);
+				cout << "  ";
+				break;
+			}
+			case 1: {
+				gotoxy(p_x, p_y);
+				cout << "①";
+				break;
+			}
+			case 2: {
+				gotoxy(p_x, p_y);
+				cout << "②";
+				break;
+			}
+			case 3: {
+				gotoxy(p_x, p_y);
+				cout << "③";
+				break;
+			}
+			case 4: {
+				gotoxy(p_x, p_y);
+				cout << "④";
+				break;
+			}
+			case 5: {
+				gotoxy(p_x, p_y);
+				cout << "⑤";
+				break;
+			}
+			case 6: {
+				gotoxy(p_x, p_y);
+				cout << "⑥";
+				break;
+			}
+			case 7: {
+				gotoxy(p_x, p_y);
+				cout << "⑦";
+				break;
+			}
+			case 8: {
+				gotoxy(p_x, p_y);
+				cout << "⑧";
+				break;
+			}
+			case MINE: {
+				//게임 오버
+			}
+			
+			}
+		}
+		case SHIFT: {
 		
 		}
 		default: {}
