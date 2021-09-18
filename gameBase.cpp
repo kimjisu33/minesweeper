@@ -89,29 +89,53 @@ void GameBase::countMine(int m_i, int m_j) {
 
 void GameBase::movePlayer() {
 
-	gotoxy(p_x, p_y);
+	gotoxy(p_x, p_y); //31, 11
 	cout << "□";
 	while (1) {
 		int n = keyControl();
 		switch (n)
 		{
-		case W: {
-			if (p_x > 20) { //20보다 작으면 안움직임
-				
+		case W: { //위로 올라가기 y감소
+			if (p_y>11) { 
+				gotoxy(p_x, p_y);
+				cout << "■";
+				gotoxy(p_x, --p_y);
+				cout << "□";
 			}
 			break;
 		}
-		case S: {
-			 if (p_y < 22) { //22보다 크면 안움직임
-
+		case S: { //아래로 내려가기 y증가
+			 if (p_y<24) { 
+				 gotoxy(p_x, p_y);
+				 cout << "■";
+				 gotoxy(p_x, ++p_y);
+				 cout << "□";
+			}
+			break;
+		}
+		case D: { //오른쪽으로 이동하기 x증가
+			if (p_x < 44) {
+				gotoxy(p_x, p_y);
+				cout << "■";
+				gotoxy(++p_x, p_y);
+				cout << "□";
+			}
+			break;
+		}
+		case A: { //왼쪽으로 이동하기 x감소
+			if (p_x > 31) {
+				gotoxy(p_x, p_y);
+				cout << "■";
+				gotoxy(--p_x, p_y);
+				cout << "□";
 			}
 			break;
 		}
 		case SPACE: {
-
+			
 		}
 		case ENTER: {
-
+		
 		}
 		default: {}
 		}

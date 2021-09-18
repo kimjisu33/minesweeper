@@ -1,8 +1,8 @@
 #include "main.h"
 
 void init() {
-	//system("mode con cols=84 lines=36 | title Áö·ÚÃ£±â");
-	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
+	system("mode con cols=150 lines=36 | title Áö·ÚÃ£±â");
+	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
 
 	HANDLE consoleHandel = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO ConsoleCursor;
