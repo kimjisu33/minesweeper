@@ -64,13 +64,14 @@ void GameBase::showGameBoard() {
 		for (int j = 0, x=30; j < PLAY1 + 2; j++) {
 			if (base[i][j] == WALL) {
 				setColor(6, 0); //노란색
-			}else if (base[i][j] == MINE) {
+			}
+			else if (base[i][j] == MINE) {
 				setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
 			}
 			gotoxy(x++,y);
 			cout << "■";
 			//cout << base[i][j] << " ";
-			setColor(7, 0);
+			setColor(15, 0);
 		}
 		cout << endl;
 	}
@@ -100,9 +101,11 @@ void GameBase::movePlayer() {
 		case W: { //위로 올라가기 y감소
 			if (p_y>11) { 
 				gotoxy(p_x, p_y);
+				setColor(15,0);
 				cout << "■";
 				gotoxy(p_x, --p_y);
-				cout << "□";
+				setColor(4, 0);
+				cout << "■";
 				i--;
 			}
 			break;
@@ -110,9 +113,11 @@ void GameBase::movePlayer() {
 		case S: { //아래로 내려가기 y증가
 			 if (p_y<24) { 
 				 gotoxy(p_x, p_y);
+				 setColor(15, 0);
 				 cout << "■";
 				 gotoxy(p_x, ++p_y);
-				 cout << "□";
+				 setColor(4, 0);
+				 cout << "■";
 				 i++;
 			}
 			break;
@@ -120,9 +125,11 @@ void GameBase::movePlayer() {
 		case D: { //오른쪽으로 이동하기 x증가
 			if (p_x < 44) {
 				gotoxy(p_x, p_y);
+				setColor(15, 0);
 				cout << "■";
 				gotoxy(++p_x, p_y);
-				cout << "□";
+				setColor(4, 0);
+				cout << "■";
 				j++;
 			}
 			break;
@@ -130,72 +137,63 @@ void GameBase::movePlayer() {
 		case A: { //왼쪽으로 이동하기 x감소
 			if (p_x > 31) {
 				gotoxy(p_x, p_y);
+				setColor(15, 0);
 				cout << "■";
 				gotoxy(--p_x, p_y);
-				cout << "□";
+				setColor(4, 0);
+				cout << "■";
 				j--;
 			}
 			break;
 		}
 		case ENTER: {
-			switch (base[i][j]) {
-			case 0: {
-				gotoxy(p_x, p_y);
-				cout << "  ";
-				break;
-			}
-			case 1: {
-				gotoxy(p_x, p_y);
-				cout << "①";
-				break;
-			}
-			case 2: {
-				gotoxy(p_x, p_y);
-				cout << "②";
-				break;
-			}
-			case 3: {
-				gotoxy(p_x, p_y);
-				cout << "③";
-				break;
-			}
-			case 4: {
-				gotoxy(p_x, p_y);
-				cout << "④";
-				break;
-			}
-			case 5: {
-				gotoxy(p_x, p_y);
-				cout << "⑤";
-				break;
-			}
-			case 6: {
-				gotoxy(p_x, p_y);
-				cout << "⑥";
-				break;
-			}
-			case 7: {
-				gotoxy(p_x, p_y);
-				cout << "⑦";
-				break;
-			}
-			case 8: {
-				gotoxy(p_x, p_y);
-				cout << "⑧";
-				break;
-			}
-			case MINE: {
-				//게임 오버
-			}
-			
-			}
+			gotoxy(p_x, p_y);
+			cout<<showNumber(i,j);
 		}
 		case SHIFT: {
 		
 		}
 		default: {}
 		}
-
+		setColor(15, 0);
+	}
+}
+string GameBase::showNumber(int i, int j) {
+	switch (base[i][j]) {
+	case 0: {
+		return "  ";
+	}
+	case 1: {
+		return "①";
+	}
+	case 2: {
+		return "②";
+	}
+	case 3: {
+		return "③";
+	}
+	case 4: {
+		return "④";
+	}
+	case 5: {
+		return "⑤";
+	}
+	case 6: {
+		return "⑥";
+	}
+	case 7: {
+		return "⑦";
+	}
+	case 8: {
+		return "⑧";
+	}
+	case MINE: {
+		//게임 오버
+		gotoxy(40, 30);
+		cout << "게임오버";
+		break;
+	}
+	default: return "■";
 	}
 }
 

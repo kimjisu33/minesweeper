@@ -4,6 +4,7 @@
 #include<conio.h>
 #include<stdbool.h>
 #include<time.h>
+#include<string.h>
 using namespace std;
 
 void init(); //콘솔 설정
@@ -27,8 +28,8 @@ void gotoxy(int, int);
 #define PLAY2_row 20
 #define PLAY2_mine 75
 
-#define MINE 9
-#define WALL 10
+#define MINE 20
+#define WALL 21
 
 int keyControl(); //키보드
 void titleDraw(); //타이틀 그리기
@@ -58,6 +59,7 @@ class GameBase {
 	void countMine(int, int);
 	void showGameBoard();
 	void movePlayer();
+	string showNumber(int, int);
 public:
 	GameBase();
 	~GameBase();

@@ -1,7 +1,7 @@
 #include "main.h"
 
 void init() {
-	system("mode con cols=150 lines=36 | title 지뢰찾기");
+	system("mode con cols=150 lines=36 | title 지뢰찾기 업그레이드");
 	//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
 
 	HANDLE consoleHandel = GetStdHandle(STD_OUTPUT_HANDLE);
