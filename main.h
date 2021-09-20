@@ -28,8 +28,8 @@ void gotoxy(int, int);
 #define PLAY2_row 20
 #define PLAY2_mine 75
 
-#define MINE 20
-#define WALL 21
+#define MINE 10
+#define WALL 11
 
 int keyControl(); //키보드
 void titleDraw(); //타이틀 그리기
@@ -50,8 +50,9 @@ public:
 };*/
 
 class GameBase {
-	int **base;//배경 배열
-	int mine; //지뢰개수
+	short **base;//배경 배열
+	short mine; //지뢰개수
+	int checked[PLAY1_mine - 2][PLAY1_mine - 2] = { 0, };
 
 	int p_x;
 	int p_y;

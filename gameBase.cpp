@@ -6,9 +6,9 @@ GameBase::GameBase() {
 	p_x = 31;
 	p_y = 11;
 
-	base = new int* [PLAY1 + 2]; //2차원 할당, 벽포함
+	base = new short* [PLAY1 + 2]; //2차원 할당, 벽포함
 	for (int i = 0; i < PLAY1 + 2; i++) {
-		base[i] = new int[PLAY1 + 2];
+		base[i] = new short[PLAY1 + 2];
 	}
 	for (int i = 0; i < PLAY1 + 2; i++) { //배열 초기화
 		for (int j = 0; j < PLAY1 + 2; j++) {
@@ -23,7 +23,7 @@ GameBase::GameBase() {
 		int a = rand() % PLAY1 + 1; //1~10
 		int b = rand() % PLAY1 + 1; //1~10
 
-		if (base[a][b] == MINE || base[a][b] == WALL) continue;
+		if (base[a][b] == MINE || base[a][b] == WALL) continue; //여기에 WALL이 체크 되야하니
 		else {
 			base[a][b] = MINE;
 			cnt++;
@@ -93,7 +93,8 @@ void GameBase::movePlayer() {
 	int i = 1, j = 1;
 
 	gotoxy(p_x, p_y); //31, 11
-	cout << "□";
+	setColor(4, 0);
+	cout << "■";
 	while (1) {
 		int n = keyControl();
 		switch (n)
@@ -102,11 +103,12 @@ void GameBase::movePlayer() {
 			if (p_y>11) { 
 				gotoxy(p_x, p_y);
 				setColor(15,0);
-				cout << "■";
+				cout << showNumber(i, j);
+				i--;
 				gotoxy(p_x, --p_y);
 				setColor(4, 0);
-				cout << "■";
-				i--;
+				cout << showNumber(i, j);
+				
 			}
 			break;
 		}
@@ -114,11 +116,12 @@ void GameBase::movePlayer() {
 			 if (p_y<24) { 
 				 gotoxy(p_x, p_y);
 				 setColor(15, 0);
-				 cout << "■";
+				 cout << showNumber(i, j);
+				 i++;
 				 gotoxy(p_x, ++p_y);
 				 setColor(4, 0);
-				 cout << "■";
-				 i++;
+				 cout << showNumber(i, j);
+				
 			}
 			break;
 		}
@@ -126,11 +129,12 @@ void GameBase::movePlayer() {
 			if (p_x < 44) {
 				gotoxy(p_x, p_y);
 				setColor(15, 0);
-				cout << "■";
+				cout << showNumber(i, j);
+				j++;
 				gotoxy(++p_x, p_y);
 				setColor(4, 0);
-				cout << "■";
-				j++;
+				cout << showNumber(i, j);
+				
 			}
 			break;
 		}
@@ -138,17 +142,21 @@ void GameBase::movePlayer() {
 			if (p_x > 31) {
 				gotoxy(p_x, p_y);
 				setColor(15, 0);
-				cout << "■";
+				cout << showNumber(i, j);
 				gotoxy(--p_x, p_y);
-				setColor(4, 0);
-				cout << "■";
 				j--;
+				setColor(4, 0);
+				cout << showNumber(i, j);
+				
 			}
 			break;
 		}
 		case ENTER: {
-			gotoxy(p_x, p_y);
-			cout<<showNumber(i,j);
+				gotoxy(p_x, p_y);
+				checked[i - 1][j -1] = 1;
+				setColor(4, 0);
+				cout << showNumber(i, j);
+				
 		}
 		case SHIFT: {
 		
@@ -159,42 +167,31 @@ void GameBase::movePlayer() {
 	}
 }
 string GameBase::showNumber(int i, int j) {
-	switch (base[i][j]) {
-	case 0: {
-		return "  ";
+	if (checked[i-1][j-1]) {
+		switch (base[i][j]) {
+		case 0: return "○";
+		case 1: return "①";
+		case 2: return "②";
+		case 3: return "③";
+		case 4: return "④";
+		case 5: return "⑤";
+		case 6: return "⑥";
+		case 7: return "⑦";
+		case 8: return "⑧";
+		case MINE: {
+			//게임 오버
+			gotoxy(40, 30);
+			cout << "게임오버";
+			break;
+		}
+		default: {}
+		}
 	}
-	case 1: {
-		return "①";
+	else {
+		return "■";
 	}
-	case 2: {
-		return "②";
-	}
-	case 3: {
-		return "③";
-	}
-	case 4: {
-		return "④";
-	}
-	case 5: {
-		return "⑤";
-	}
-	case 6: {
-		return "⑥";
-	}
-	case 7: {
-		return "⑦";
-	}
-	case 8: {
-		return "⑧";
-	}
-	case MINE: {
-		//게임 오버
-		gotoxy(40, 30);
-		cout << "게임오버";
-		break;
-	}
-	default: return "■";
-	}
+	
+	return "";
 }
 
 void GameBase::gameStart() {
