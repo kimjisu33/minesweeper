@@ -95,7 +95,13 @@ void GameBase::movePlayer() {
 	gotoxy(p_x, p_y); //31, 11
 	setColor(4, 0);
 	cout << "¡á";
+
 	while (1) {
+
+		setColor(15, 0);
+		gotoxy(40, 30);
+		cout << "Ã£Àº Áö·Ú °³¼ö : " << f << " / " << PLAY1_mine;
+
 		int n = keyControl();
 		switch (n)
 		{
@@ -152,14 +158,31 @@ void GameBase::movePlayer() {
 			break;
 		}
 		case ENTER: {
+			if (checked[i - 1][j - 1] == 0) {
+				checked[i - 1][j - 1] = 1; //¼ýÀÚ
 				gotoxy(p_x, p_y);
-				checked[i - 1][j -1] = 1;
 				setColor(4, 0);
 				cout << showNumber(i, j);
+			}
+			break;
 				
 		}
 		case SHIFT: {
-		
+			if (checked[i - 1][j - 1] == 0) {
+				checked[i - 1][j - 1] = 2; //±ê¹ß
+				gotoxy(p_x, p_y);
+				setColor(4, 0);
+				cout << showNumber(i, j);
+				f++;
+			}
+			else if (checked[i - 1][j - 1] == 2) {
+				checked[i - 1][j - 1] = 0;
+				gotoxy(p_x, p_y);
+				setColor(4, 0);
+				cout << showNumber(i, j);
+				f--;
+			}
+			break;
 		}
 		default: {}
 		}
@@ -167,7 +190,7 @@ void GameBase::movePlayer() {
 	}
 }
 string GameBase::showNumber(int i, int j) {
-	if (checked[i-1][j-1]) {
+	if (checked[i-1][j-1]==1) {
 		switch (base[i][j]) {
 		case 0: return "¡Û";
 		case 1: return "¨ç";
@@ -186,6 +209,9 @@ string GameBase::showNumber(int i, int j) {
 		}
 		default: {}
 		}
+	}
+	else if (checked[i - 1][j - 1] == 2) {
+		return "¢Ò";
 	}
 	else {
 		return "¡á";

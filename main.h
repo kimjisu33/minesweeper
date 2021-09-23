@@ -61,6 +61,9 @@ class GameBase {
 	void showGameBoard();
 	void movePlayer();
 	string showNumber(int, int);
+
+	int f=0; //사용한 깃발 개수 
+
 public:
 	GameBase();
 	~GameBase();
