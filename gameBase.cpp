@@ -1,51 +1,64 @@
 #include "main.h"
 
-GameBase::GameBase() {
-	mine = PLAY1_mine; //지뢰 개수 이거 왜넣었지..?
+GameBase::GameBase(short p_n) {
 
-	p_x = 31;
-	p_y = 11;
-
-	base = new short* [PLAY1 + 2]; //2차원 할당, 벽포함
-	for (int i = 0; i < PLAY1 + 2; i++) {
-		base[i] = new short[PLAY1 + 2];
+	if (p_n == 1) {
+		p = new player(31,11,1);
+		mine = PLAY1_mine; // 지뢰 찾으면 --하려고 넣은듯
+		row = PLAY1;
+		col = PLAY1;
 	}
-	for (int i = 0; i < PLAY1 + 2; i++) { //배열 초기화
-		for (int j = 0; j < PLAY1 + 2; j++) {
-			if (i == 0 || i == PLAY1 + 1 || j == 0 || j == PLAY1 + 1) base[i][j] = WALL; //벽
-			else base[i][j] = 0;
+	else {
+		p = new player[2];
+		//p 값 초기화 해야함
+		p[0].setData(31, 11, 2);
+		p[1].setData(31, 11, 2);
+		mine = PLAY2_mine; 
+		row = PLAY2_row; //15
+		col = PLAY2_col; //20
+	}
+
+	base = new short*[row +2]; //행 2차원 할당, 벽포함
+	for (int i = 0; i < row+2 ; i++) {
+		base[i] = new short[col + 2]; //열
+	}
+	for (int i = 0; i < row + 2; i++) { //배열 초기화
+		for (int j = 0; j < col+2; j++) {
+			if (i == 0 || i == row + 1 || j == 0 || j == col + 1) base[i][j] = WALL; //벽
+			else base[i][j] = 0; 
 		}
 	}
 
 	//지뢰 생성
 	int cnt = 0;
-	while (cnt < PLAY1_mine) {
-		int a = rand() % PLAY1 + 1; //1~10
-		int b = rand() % PLAY1 + 1; //1~10
+	while (cnt < mine) {
+		int a = rand() % row + 1; //1~row
+		int b = rand() % col + 1; //1~col
 
-		if (base[a][b] == MINE || base[a][b] == WALL) continue; //여기에 WALL이 체크 되야하니
+		if (base[a][b] == MINE || base[a][b] == WALL) continue;
 		else {
 			base[a][b] = MINE;
 			cnt++;
 		}
 	}
 
-	for (int i = 1; i < PLAY1 + 1; i++) {
-		for (int j = 1; j < PLAY1 + 1; j++) {
+	for (int i = 1; i <= row ; i++) {
+		for (int j = 1; j <= col ; j++) {
 			if (base[i][j] == MINE) countMine(i, j);
 		}
 	}
 
 }
 GameBase::~GameBase() {
-	for (int i = 0; i < PLAY1 + 2; i++) {
+	for (int i = 0; i < row + 2; i++) {
 		delete[] base[i];
 	}
 	delete[] base;
+	delete[] p;
 }
 void GameBase::showBase() {
-	for (int i = 0; i < PLAY1 + 2; i++) {
-		for (int j = 0; j < PLAY1 + 2; j++) {
+	for (int i = 0; i < row + 2; i++) {
+		for (int j = 0; j < col + 2; j++) {
 			if (base[i][j] == 1) {
 				setColor(6, 0);
 			}
@@ -58,10 +71,8 @@ void GameBase::showBase() {
 void GameBase::showGameBoard() {
 	int x = 30;
 	int y = 10;
-	/*gotoxy(x, y);
-	cout << "■■■■■■■■■■■■■■■■";*/
-	for (int i = 0; i < PLAY1 + 2; i++,y++) {
-		for (int j = 0, x=30; j < PLAY1 + 2; j++) {
+	for (int i = 0; i < row + 2; i++,y++) {
+		for (int j = 0, x=30; j < col + 2; j++) {
 			if (base[i][j] == WALL) {
 				setColor(6, 0); //노란색
 			}
@@ -92,26 +103,26 @@ void GameBase::movePlayer() {
 
 	int i = 1, j = 1;
 
-	gotoxy(p_x, p_y); //31, 11
+	gotoxy(p->x, p->y); //31, 11
 	setColor(4, 0);
 	cout << "■";
 
 	while (1) {
 
 		setColor(15, 0);
-		gotoxy(40, 30);
-		cout << "찾은 지뢰 개수 : " << f << " / " << PLAY1_mine;
+		gotoxy(50, 35);
+		cout << "찾은 지뢰 개수 : " << p->flag_cnt << " / " << mine;
 
 		int n = keyControl();
 		switch (n)
 		{
 		case W: { //위로 올라가기 y감소
-			if (p_y>11) { 
-				gotoxy(p_x, p_y);
+			if (p->y >11) {
+				gotoxy(p->x, p->y);
 				setColor(15,0);
 				cout << showNumber(i, j);
 				i--;
-				gotoxy(p_x, --p_y);
+				gotoxy(p->x, --p->y);
 				setColor(4, 0);
 				cout << showNumber(i, j);
 				
@@ -119,12 +130,12 @@ void GameBase::movePlayer() {
 			break;
 		}
 		case S: { //아래로 내려가기 y증가
-			 if (p_y<24) { 
-				 gotoxy(p_x, p_y);
+			 if (p->y <24) {
+				 gotoxy(p->x, p->y);
 				 setColor(15, 0);
 				 cout << showNumber(i, j);
 				 i++;
-				 gotoxy(p_x, ++p_y);
+				 gotoxy(p->x, ++p->y);
 				 setColor(4, 0);
 				 cout << showNumber(i, j);
 				
@@ -132,12 +143,12 @@ void GameBase::movePlayer() {
 			break;
 		}
 		case D: { //오른쪽으로 이동하기 x증가
-			if (p_x < 44) {
-				gotoxy(p_x, p_y);
+			if (p->x < 44) {
+				gotoxy(p->x, p->y);
 				setColor(15, 0);
 				cout << showNumber(i, j);
 				j++;
-				gotoxy(++p_x, p_y);
+				gotoxy(++p->x, p->y);
 				setColor(4, 0);
 				cout << showNumber(i, j);
 				
@@ -145,11 +156,11 @@ void GameBase::movePlayer() {
 			break;
 		}
 		case A: { //왼쪽으로 이동하기 x감소
-			if (p_x > 31) {
-				gotoxy(p_x, p_y);
+			if (p->x > 31) {
+				gotoxy(p->x, p->y);
 				setColor(15, 0);
 				cout << showNumber(i, j);
-				gotoxy(--p_x, p_y);
+				gotoxy(--p->x, p->y);
 				j--;
 				setColor(4, 0);
 				cout << showNumber(i, j);
@@ -160,7 +171,7 @@ void GameBase::movePlayer() {
 		case ENTER: {
 			if (checked[i - 1][j - 1] == 0) {
 				checked[i - 1][j - 1] = 1; //숫자
-				gotoxy(p_x, p_y);
+				gotoxy(p->x, p->y);
 				setColor(4, 0);
 				cout << showNumber(i, j);
 			}
@@ -170,17 +181,17 @@ void GameBase::movePlayer() {
 		case SHIFT: {
 			if (checked[i - 1][j - 1] == 0) {
 				checked[i - 1][j - 1] = 2; //깃발
-				gotoxy(p_x, p_y);
+				gotoxy(p->x, p->y);
 				setColor(4, 0);
 				cout << showNumber(i, j);
-				f++;
+				p->flag_cnt++;
 			}
 			else if (checked[i - 1][j - 1] == 2) {
 				checked[i - 1][j - 1] = 0;
-				gotoxy(p_x, p_y);
+				gotoxy(p->x, p->y);
 				setColor(4, 0);
 				cout << showNumber(i, j);
-				f--;
+				p->flag_cnt--;
 			}
 			break;
 		}
@@ -188,6 +199,7 @@ void GameBase::movePlayer() {
 		}
 		setColor(15, 0);
 	}
+	//지뢰 다 찾음~
 }
 string GameBase::showNumber(int i, int j) {
 	if (checked[i-1][j-1]==1) {

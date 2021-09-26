@@ -24,9 +24,9 @@ void gotoxy(int, int);
 #define PLAY1 14
 #define PLAY1_mine 20
 //2인용 15*20 75개
-#define PLAY2_col 15
-#define PLAY2_row 20
-#define PLAY2_mine 75
+#define PLAY2_row 15
+#define PLAY2_col 20
+#define PLAY2_mine 50 //75
 
 #define MINE 10
 #define WALL 11
@@ -34,38 +34,43 @@ void gotoxy(int, int);
 int keyControl(); //키보드
 void titleDraw(); //타이틀 그리기
 int menuDraw(short& player); //메뉴 화면
-void infoDraw(short player); //게임  설명
+void infoDraw(short player); //게임 설명
 void gameStart(short player); //게임 화면
 void setColor(int color, int bgcolor);
 
-/*
+
 class player {
-	short player_n;//몇인용인지
-	int x; //플레이어의 x좌표
-	int y; //플레이어의 y좌표
-	int life; //남은 목숨 (1인용 : 1개 / 2인용 : 2개)
-	//bool flag_cnt;//깃발 개수
+	short life; //남은 목숨 (1인용 : 1개 / 2인용 : 2개)
+	
 public:
-	player(int);
-};*/
+	short flag_cnt=0;//사용한 깃발 개수
+	short x; //플레이어의 x좌표
+	short y; //플레이어의 y좌표
+	player(){}
+	player(short x, short y, short life): x(x),y(y),life(life) {}
+	void setData(short x, short y, short life) { player(x, y, life); }
+};
 
 class GameBase {
 	short **base;//배경 배열
 	short mine; //지뢰개수
-	int checked[PLAY1_mine - 2][PLAY1_mine - 2] = { 0, };
+	short checked[PLAY1_mine - 2][PLAY1_mine - 2] = { 0, };
 
-	int p_x;
-	int p_y;
+	int row, col;
+	player* p;
+	/*int p_x;
+	int p_y;*/
+	//int f=0; //사용한 깃발 개수 
 
 	void countMine(int, int);
 	void showGameBoard();
 	void movePlayer();
 	string showNumber(int, int);
 
-	int f=0; //사용한 깃발 개수 
+	
 
 public:
-	GameBase();
+	GameBase(short);
 	~GameBase();
 	void showBase(); //배경 값 보기
 	

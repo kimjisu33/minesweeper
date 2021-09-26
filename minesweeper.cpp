@@ -3,7 +3,7 @@
 int main() {
 	init();
 	srand((unsigned)time(0));
-	GameBase game;
+	GameBase game(1);
 	//game.showBase();
 	//game.showGameBoard();
 	game.gameStart();

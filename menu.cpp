@@ -130,19 +130,19 @@ void infoDraw(short player) {
 
 void gameStart(short player) {
 	system("cls");
-	/*if (player == 1) {
+	if (player == 1) {
 		cout << "1인용 게임 화면~" << endl;
 
 	}
 	else if (player == 2) {
 		cout << "2인용 게임 화면~" << endl;
-	}*/
-
-	cout << "enter 또는 space를 누르면 돌아갑니다." << endl;
-
-	while (1) {
-		if (keyControl() == SPACE || keyControl() == ENTER) break;
 	}
+
+	//cout << "enter 또는 space를 누르면 돌아갑니다." << endl;
+
+	/*while (1) {
+		if (keyControl() == SPACE || keyControl() == ENTER) break;
+	}*/
 }
 
 
