@@ -10,7 +10,6 @@ GameBase::GameBase(short p_n) {
 	}
 	else {
 		p = new player[2];
-		//p 값 초기화 해야함
 		p[0].setData(31, 11, 2);
 		p[1].setData(31, 11, 2);
 		mine = PLAY2_mine; 
@@ -18,6 +17,7 @@ GameBase::GameBase(short p_n) {
 		col = PLAY2_col; //20
 	}
 
+	over = false;
 	base = new short*[row +2]; //행 2차원 할당, 벽포함
 	for (int i = 0; i < row+2 ; i++) {
 		base[i] = new short[col + 2]; //열
@@ -88,8 +88,6 @@ void GameBase::showGameBoard() {
 	}
 	
 }
-
-
 void GameBase::countMine(int m_i, int m_j) {
 	for (int i = m_i - 1; i <= m_i + 1; i++) {
 		for (int j = m_j - 1; j <= m_j + 1; j++) {
@@ -107,11 +105,11 @@ void GameBase::movePlayer() {
 	setColor(4, 0);
 	cout << "■";
 
-	while (1) {
+	while (!over) {
 
 		setColor(15, 0);
 		gotoxy(50, 35);
-		cout << "찾은 지뢰 개수 : " << p->flag_cnt << " / " << mine;
+		cout << "깃발 : " << mine-(p->flag_cnt) << " / " << mine;
 
 		int n = keyControl();
 		switch (n)
@@ -200,6 +198,7 @@ void GameBase::movePlayer() {
 		setColor(15, 0);
 	}
 	//지뢰 다 찾음~
+	if(!over) gameClear();
 }
 string GameBase::showNumber(int i, int j) {
 	if (checked[i-1][j-1]==1) {
@@ -215,8 +214,8 @@ string GameBase::showNumber(int i, int j) {
 		case 8: return "⑧";
 		case MINE: {
 			//게임 오버
-			gotoxy(40, 30);
-			cout << "게임오버";
+			gameOver();
+			over = true;
 			break;
 		}
 		default: {}
@@ -230,6 +229,17 @@ string GameBase::showNumber(int i, int j) {
 	}
 	
 	return "";
+}
+
+void GameBase::gameOver() {
+	system("cls"); 
+	gotoxy(0, 0);
+	cout << "게임오버";
+}
+void GameBase::gameClear() {
+	system("cls");
+	gotoxy(0,0);
+	cout << "지뢰다찾음!";
 }
 
 void GameBase::gameStart() {

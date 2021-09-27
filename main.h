@@ -5,6 +5,7 @@
 #include<stdbool.h>
 #include<time.h>
 #include<string.h>
+#include<stdbool.h>
 using namespace std;
 
 void init(); //콘솔 설정
@@ -22,7 +23,7 @@ void gotoxy(int, int);
 //지뢰찾기 판
 //1인용 14*14 40개
 #define PLAY1 14
-#define PLAY1_mine 20
+#define PLAY1_mine 1
 //2인용 15*20 75개
 #define PLAY2_row 15
 #define PLAY2_col 20
@@ -54,7 +55,8 @@ public:
 class GameBase {
 	short **base;//배경 배열
 	short mine; //지뢰개수
-	short checked[PLAY1_mine - 2][PLAY1_mine - 2] = { 0, };
+	short checked[PLAY1 - 2][PLAY1 - 2] = { 0, };
+	bool over;
 
 	int row, col;
 	player* p;
@@ -66,8 +68,8 @@ class GameBase {
 	void showGameBoard();
 	void movePlayer();
 	string showNumber(int, int);
-
-	
+	void gameOver();
+	void gameClear();
 
 public:
 	GameBase(short);
