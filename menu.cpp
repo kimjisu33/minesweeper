@@ -15,7 +15,7 @@ int menuDraw(short& player) {
 	int y = 20;
 	gotoxy(x, y - 2);
 	cout << "▷ "<< player <<"명 ◁";
-	gotoxy(x - 2, y);
+	gotoxy(x - 1, y);
 	cout << "> 게임 시작";
 	gotoxy(x, y + 1);
 	cout << "게임 설명";
@@ -28,15 +28,15 @@ int menuDraw(short& player) {
 		{
 		case W: {
 			if (y > 20) { //20보다 작으면 안움직임
-				gotoxy(x - 2, y); //원래 있던 자리 화살표 없애기
+				gotoxy(x - 1, y); //원래 있던 자리 화살표 없애기
 				cout << " ";
-				gotoxy(x - 2, --y); //화살표 위로 이동
+				gotoxy(x - 1, --y); //화살표 위로 이동
 				cout << ">";
 			}else if (y == 20) { // player 인원 메뉴 들어가기
-				gotoxy(x - 2, y);
+				gotoxy(x - 1, y);
 				cout << " ";
 				y -= 2;
-				gotoxy(x-2, y);
+				gotoxy(x-1, y);
 				cout << ">";
 				gotoxy(37, 18);
 				cout << "▶ " << player << "명 ◀";
@@ -56,18 +56,18 @@ int menuDraw(short& player) {
 		}
 		case S: {
 			if (y == 18) { // player 인원 메뉴 빠져나오기
-				gotoxy(x - 2, y); 
+				gotoxy(x - 1, y); 
 				cout << " ";
 				y += 2;
-				gotoxy(x - 2, y);
+				gotoxy(x - 1, y);
 				cout << ">";
 				gotoxy(37, 18);
 				cout << "▷ " << player << "명 ◁";
 			}
 			else if (y < 22) { //22보다 크면 안움직임
-				gotoxy(x - 2, y); //원래 있던 자리 화살표 없애기
+				gotoxy(x - 1, y); //원래 있던 자리 화살표 없애기
 				cout << " ";
-				gotoxy(x - 2, ++y); //화살표 아래로 이동
+				gotoxy(x - 1, ++y); //화살표 아래로 이동
 				cout << ">";
 			}
 			break;
@@ -131,13 +131,13 @@ void infoDraw(short player) {
 void gameStart(short player) {
 	system("cls");
 	if (player == 1) {
-		cout << "1인용 게임 화면~" << endl;
+		//cout << "1인용 게임 화면~" << endl;
 		GameBase game(1);
 		game.gameStart();
 
 	}
 	else if (player == 2) {
-		cout << "2인용 게임 화면~" << endl;
+		//cout << "2인용 게임 화면~" << endl;
 		GameBase game(2);
 		game.gameStart();
 	}
