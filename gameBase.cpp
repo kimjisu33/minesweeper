@@ -169,16 +169,18 @@ void GameBase::movePlayer() {
 		}
 		case ENTER: {
 			//처음 클릭하는 칸은 지뢰가 아니어야 함
-
-			//if (checked[i - 1][j - 1] == 0) {
-			//	checked[i - 1][j - 1] = 1; //숫자
-			//	gotoxy(p->x, p->y);
-			//	setColor(4, 0);
-			//	cout << showNumber(i, j);
-			//}
-			findEmptyBase(i,j);
+			if (base[i][j]==MINE) {
+				gameOver();
+			}
+			else if (checked[i - 1][j - 1] == 0) {
+				//checked[i - 1][j - 1] = 1; //숫자
+				//gotoxy(p->x, p->y);
+				//setColor(4, 0);
+				//cout << showNumber(i, j);
+				findEmptyBase(i, j);
+			}
+			
 			break;
-				
 		}
 		case SHIFT: {
 			if (checked[i - 1][j - 1] == 0) {
@@ -219,11 +221,11 @@ string GameBase::showNumber(int i, int j) {
 		case 6: return "⑥";
 		case 7: return "⑦";
 		case 8: return "⑧";
-		case MINE: {
-			//게임 오버
-			gameOver();
-			break;
-		}
+		//case MINE: {
+		//	//게임 오버
+		//	gameOver();
+		//	break;
+		//}
 		default: {}
 		}
 	}
@@ -245,18 +247,21 @@ void GameBase::findEmptyBase(int check_i, int check_j) {
 		}
 	}
 	
-	if (noMine) {
-		for (int i = check_i - 1; i <= check_i + 1; i++) {
-			for (int j = check_j - 1; j <= check_j + 1; j++) {
-				if (checked[i][j] == 0) {
-					checked[i][j] = 1; //숫자
-					gotoxy(p->x, p->y);
-					setColor(4, 0);
-					cout << showNumber(i, j);
-				}
+	int temp_x = p->x - 1;
+	int temp_y = p->y - 1;
+	for (int i = check_i - 1; i <= check_i + 1; i++, temp_y++) {
+		for (int j = check_j - 1, temp_x = p->x - 1; j <= check_j + 1; j++, temp_x++) {
+			if (base[i][j] == WALL || base[i][j] == MINE) continue;
+			if (checked[i - 1][j - 1] == 0) {
+				checked[i - 1][j - 1] = 1; //숫자
+				gotoxy(temp_x, temp_y);
+				setColor(15, 0);
+				cout << showNumber(i, j);
 			}
 		}
-		findEmptyBase(check_i+(rand()%2), check_j+(rand() % 2));
+	}
+	if (noMine) {
+		//findEmptyBase(check_i+1, check_j+1);
 	}
 	
 	
