@@ -1,6 +1,6 @@
 #include "main.h"
 
-GameBase::GameBase(short p_n) {
+GameBase::GameBase(int p_n) {
 
 	if (p_n == 1) {
 		p = new player(31,11,1);
@@ -19,9 +19,9 @@ GameBase::GameBase(short p_n) {
 
 	over = false;
 	clear = false;
-	base = new short*[row +2]; //행 2차원 할당, 벽포함
+	base = new int*[row +2]; //행 2차원 할당, 벽포함
 	for (int i = 0; i < row+2 ; i++) {
-		base[i] = new short[col + 2]; //열
+		base[i] = new int[col + 2]; //열
 	}
 	for (int i = 0; i < row + 2; i++) { //배열 초기화
 		for (int j = 0; j < col+2; j++) {
@@ -30,24 +30,16 @@ GameBase::GameBase(short p_n) {
 		}
 	}
 
+	for (int i = 0, x=p->x ; i < row; i++, x++) { //좌표 저장
+		for (int j = 0, y=p->y ; j < col; j++, y++) {
+			position_x[i][j] = x;
+			position_y[i][j] = y;
+			//cout << position_x[i][j] << ", " << position_y[i][j] << endl;
+		}
+	}
+
 	//지뢰 생성
-	int cnt = 0;
-	while (cnt < mine) {
-		int a = rand() % row + 1; //1~row
-		int b = rand() % col + 1; //1~col
-
-		if (base[a][b] == MINE || base[a][b] == WALL) continue;
-		else {
-			base[a][b] = MINE;
-			cnt++;
-		}
-	}
-
-	for (int i = 1; i <= row ; i++) {
-		for (int j = 1; j <= col ; j++) {
-			if (base[i][j] == MINE) countMine(i, j);
-		}
-	}
+	setMine(mine);
 
 }
 GameBase::~GameBase() {
@@ -57,6 +49,7 @@ GameBase::~GameBase() {
 	delete[] base;
 	delete[] p;
 }
+
 void GameBase::showBase() {
 	for (int i = 0; i < row + 2; i++) {
 		for (int j = 0; j < col + 2; j++) {
@@ -69,6 +62,17 @@ void GameBase::showBase() {
 		cout << endl;
 	}
 }
+void GameBase::showCheck() {
+	for (int i = 0; i < row; i++) {
+		for (int j = 0; j < col; j++) {
+			if (base[i+1][j+1] == MINE) setColor(6, 0);
+			cout<<checked[i][j];
+			setColor(7, 0);
+		}
+		cout << endl;
+	}
+}
+
 void GameBase::showGameBoard() {
 	int x = 30;
 	int y = 10;
@@ -89,11 +93,27 @@ void GameBase::showGameBoard() {
 	}
 	
 }
-void GameBase::countMine(int m_i, int m_j) {
+
+void GameBase::countMine(int m_i, int m_j, bool plus) {
 	for (int i = m_i - 1; i <= m_i + 1; i++) {
 		for (int j = m_j - 1; j <= m_j + 1; j++) {
-			if (base[i][j] == MINE || base[i][j] == WALL)continue;
-			base[i][j]++;
+			if (base[i][j] == MINE || base[i][j] == WALL) continue;
+			if (plus) base[i][j]++;
+			else base[i][j]--;
+		}
+	}
+}
+void GameBase::setMine(int mine) {
+	int cnt = 0;
+	while (cnt < mine) {
+		int a = rand() % row + 1; //1~row
+		int b = rand() % col + 1; //1~col
+
+		if (base[a][b] == MINE || base[a][b] == WALL) continue;
+		else {
+			base[a][b] = MINE;
+			countMine(a,b,true);
+			cnt++;
 		}
 	}
 }
@@ -101,6 +121,7 @@ void GameBase::countMine(int m_i, int m_j) {
 void GameBase::movePlayer() {
 
 	int i = 1, j = 1;
+	bool first = true;
 
 	gotoxy(p->x, p->y); //31, 11
 	setColor(4, 0);
@@ -168,18 +189,26 @@ void GameBase::movePlayer() {
 			break;
 		}
 		case ENTER: {
-			//처음 클릭하는 칸은 지뢰가 아니어야 함
-			if (base[i][j]==MINE) {
+			
+			if (first && base[i][j] == MINE) { //처음 클릭하는 칸은 지뢰가 아니어야 함
+				setMine(1);
+				countMine(i, j, false);
+				base[i][j] = 0;
+			}
+			if (base[i][j]==MINE&& checked[i - 1][j - 1] != 2) {
 				gameOver();
 			}
 			else if (checked[i - 1][j - 1] == 0) {
-				//checked[i - 1][j - 1] = 1; //숫자
-				//gotoxy(p->x, p->y);
-				//setColor(4, 0);
-				//cout << showNumber(i, j);
-				findEmptyBase(i, j);
+				findEmptyBase(i, j, p->x, p->y);
+
+				//=====================값 체크
+				gotoxy(0, 3);
+				//showBase();
+				showCheck();
+				gotoxy(0, 1);
+				cout << p->x << "   " << p->y;
 			}
-			
+			first = false;
 			break;
 		}
 		case SHIFT: {
@@ -202,8 +231,7 @@ void GameBase::movePlayer() {
 		default: {}
 		}
 		setColor(15, 0);
-		if (mine == (p->flag_cnt)) {//mine과 설치한 깃발의 갯수가 같은가?
-			//if(mine이 있는 방에만 깃발이 있는가)
+		if (mine == (p->flag_cnt)) {//mine과 설치한 깃발의 갯수가 같은가? || (추가해야함)지뢰만 남았는가
 			checkClear();
 		}
 	}
@@ -221,11 +249,6 @@ string GameBase::showNumber(int i, int j) {
 		case 6: return "⑥";
 		case 7: return "⑦";
 		case 8: return "⑧";
-		//case MINE: {
-		//	//게임 오버
-		//	gameOver();
-		//	break;
-		//}
 		default: {}
 		}
 	}
@@ -238,68 +261,111 @@ string GameBase::showNumber(int i, int j) {
 	
 	return "";
 }
-void GameBase::findEmptyBase(int check_i, int check_j) {
+
+void GameBase::findEmptyBase(int click_i, int click_j, int click_x, int click_y) {
 	
-	bool noMine = true;
-	for (int i = check_i - 1; i <= check_i + 1; i++) {
-		for (int j = check_j - 1; j <= check_j + 1; j++) {
-			if (base[i][j] == MINE) noMine = false;
-		}
-	}
-	
-	int temp_x = p->x - 1;
-	int temp_y = p->y - 1;
-	for (int i = check_i - 1; i <= check_i + 1; i++, temp_y++) {
-		for (int j = check_j - 1, temp_x = p->x - 1; j <= check_j + 1; j++, temp_x++) {
-			if (base[i][j] == WALL || base[i][j] == MINE) continue;
+	int cnt = 0;
+	for (int i = click_i - 1, y = click_y - 1 ; i <= click_i + 1; i++, y++) {
+		for (int j = click_j - 1, x = click_x-1 ; j <= click_j + 1; j++, x++) {
+			if (base[i][j] == WALL || base[i][j] == MINE || checked[i - 1][j - 1] == 2) continue;
+
 			if (checked[i - 1][j - 1] == 0) {
+
 				checked[i - 1][j - 1] = 1; //숫자
-				gotoxy(temp_x, temp_y);
 				setColor(15, 0);
+				gotoxy(x, y);
 				cout << showNumber(i, j);
+
+				//열린 블럭 체크
+				gotoxy(50, cnt++);
+				cout << "좌표 : " << x << "   " << y;
+				gotoxy(50, cnt++);
+				cout << "인덱스 : " << i << "   " << j;
+
+
 			}
 		}
 	}
-	if (noMine) {
-		//findEmptyBase(check_i+1, check_j+1);
-	}
-	
-	
+
+	/*
+	if (base[click_i][click_j] == 0) { //주변에 지뢰가 없으면
+
+		int a = 0, b = 0;
+		while (true) {
+			a = rand() % 3 - 1; // -1 ~ 1
+			b = rand() % 3 - 1;
+
+			if (!(a == 0 && b == 0) && base[click_i + a][click_j + b] != WALL && checked[click_i + a][click_j + b] != 2) break;
+		}//랜덤 돌리기
+		
+		findEmptyBase(click_i + a, click_j + b, click_x + a, click_y + b);
+
+	}*/
 }
 
 void GameBase::gameOver() {
 	system("cls"); 
-	gotoxy(0, 0);
-	cout << "게임오버" << endl;
-	over = true;
 
-	cout << "enter 또는 space를 누르면 돌아갑니다." << endl;
-	while (1) {
-		if (keyControl() == SPACE || keyControl() == ENTER) break;
-	}
+	setColor(4, 0);
+	int a = 20; int b = 7;
+	gotoxy(a, b++);
+	cout << "  _____            __  __  ______    ____  __      __ ______  _____" << endl;
+	gotoxy(a, b++);
+	cout << " / ____|    /\\    |  \\/  ||  ____|  / __ \\ \\ \\    / /|  ____||  __ \\" << endl;
+	gotoxy(a, b++);
+	cout << "| |  __    /  \\   | \\  / || |__    | |  | | \ \  / / | |__   | |__) |" << endl;
+	gotoxy(a, b++);
+	cout << "| | |_ |  / /\\ \\  | |\\/| ||  __|   | |  | |  \\ \\/ /  |  __|  |  _  /" << endl;
+	gotoxy(a, b++);
+	cout << "| |__| | / ____ \\ | |  | || |____  | |__| |   \\  /   | |____ | | \\ \\" << endl;
+	gotoxy(a, b++);
+	cout << " \\_____|/_/    \\_\\|_|  |_||______|  \\____/     \\/    |______||_|  \\_\\" << endl;
+	
+	over = true;
+	setColor(15, 0);
+	system("pause");
 }
 void GameBase::gameClear() {
 	system("cls");
-	gotoxy(0,0);
-	cout << "지뢰다찾음!"<<endl;
+	setColor(6, 0);
+	int a = 20; int b = 7;
+	gotoxy(a, b++);
+	cout << " ::::::::  :::        ::::::::::     :::     :::::::::     :::    :::" << endl;
+	gotoxy(a, b++);
+	cout << ":+:    :+: :+:        :+:          :+: :+:   :+:    :+:    :+:    :+:" << endl;
+	gotoxy(a, b++);
+	cout << "+:+        +:+        +:+         +:+   +:+  +:+    +:+    +:+    +:+" << endl;
+	gotoxy(a, b++);
+	cout << "+#+        +#+        +#++:++#   +#++:++#++: +#++:++#:     +#+    +#+" << endl;
+	gotoxy(a, b++);
+	cout << "+#+        +#+        +#+        +#+     +#+ +#+    +#+    +#+    +#+" << endl;
+	gotoxy(a, b++);
+	cout << "#+#    #+# #+#        #+#        #+#     #+# #+#    #+#" << endl;
+	gotoxy(a, b++);
+	cout << " ########  ########## ########## ###     ### ###    ###    ###    ###" << endl;
 
-	cout << "enter 또는 space를 누르면 돌아갑니다." << endl;
-	while (1) {
-		if (keyControl() == SPACE || keyControl() == ENTER) break;
-	}
+
+	setColor(15, 0);
+	system("pause");
 }
 void GameBase::checkClear() {
+	clear = true;
 	for (int i = 1; i <= row; i++) {
 		for (int j = 1; j <= col; j++) {
 			if (base[i][j] == MINE) {
-				if(checked[i - 1][j - 1] == 2) clear = true;
+				if (checked[i - 1][j - 1] != 2) {
+					clear = false;
+					break;
+				}
 			}
 		}
+		if (!clear) break;
 	}
 }
 
 void GameBase::gameStart() {
 	showGameBoard();
-	//showBase();
+	
 	movePlayer();
 }
+ 

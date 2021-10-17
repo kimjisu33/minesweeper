@@ -23,7 +23,7 @@ void gotoxy(int, int);
 //지뢰찾기 판
 //1인용 14*14 40개
 #define PLAY1 14
-#define PLAY1_mine 1 //20
+#define PLAY1_mine 3 //20
 //2인용 15*20 75개
 #define PLAY2_row 15
 #define PLAY2_col 20
@@ -53,20 +53,23 @@ public:
 };
 
 class GameBase {
-	short **base;//배경 배열
-	short mine; //지뢰개수
+	int **base;//배경 배열
+	int mine; //지뢰개수
 	int row, col;
 	player* p;
 
-	short checked[PLAY1][PLAY1] = { 0, };
+	int checked[PLAY1][PLAY1] = { 0, };
+	int position_x[PLAY1][PLAY1] = { 0, };
+	int position_y[PLAY1][PLAY1] = { 0, };
 	bool over;
 	bool clear;
 
-	void countMine(int, int);
+	void setMine(int);
+	void countMine(int, int, bool);
 	void showGameBoard();
 	void movePlayer();
 	string showNumber(int, int);
-	void findEmptyBase(int, int);
+	void findEmptyBase(int, int, int, int);
 
 	void gameOver();
 	void gameClear();
@@ -74,9 +77,12 @@ class GameBase {
 
 
 public:
-	GameBase(short);
+	GameBase(int);
 	~GameBase();
 	void showBase(); //배경 값 보기
+	void showCheck();
+
 	void gameStart();
+	
 };
 

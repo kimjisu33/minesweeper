@@ -3,13 +3,28 @@
 
 
 void titleDraw() {
-	gotoxy(32, 10);
-	cout << "minesweeper title" << endl;
+	int a = 25; int b = 7;
+	gotoxy(a, b++);
+	cout << "minesweeper" << endl;
+	gotoxy(a, b++);
+	cout << " _    _  _____    _____  _____             _____   ______" << endl;
+	gotoxy(a, b++);
+	cout << "| |  | ||  __ \\  / ____||  __ \\     /\\    |  __ \\ |  ____|" << endl;
+	gotoxy(a, b++);
+	cout << "| |  | || |__) || |  __ | |__) |   /  \\   | |  | || |__" << endl;
+	gotoxy(a, b++);
+	cout << "| |  | ||  ___/ | | |_ ||  _  /   / /\\ \\  | |  | ||  __|" << endl;
+	gotoxy(a, b++);
+	cout << "| |__| || |     | |__| || | \\ \\  / ____ \\ | |__| || |____" << endl;
+	gotoxy(a, b++);
+	cout << " \\____/ |_|      \\_____||_|  \\_\\/_/    \\_\\|_____/ |______|" << endl;
 
 }
 
 int menuDraw(short& player) {
 	//w키 아니고 다른키 눌러도 한칸 올라감 나중에 해결하렴
+
+	setColor(15, 0);
 
 	int x = 37;
 	int y = 20;
@@ -45,8 +60,8 @@ int menuDraw(short& player) {
 						if (player == 1) player = 2;						
 						else if (player == 2) player = 1;
 
-						gotoxy(37, 18);
-						cout << "▶ " << player << "명 ◀";
+						/*gotoxy(37, 18);
+						cout << "▶ " << player << "명 ◀";*/
 					
 					}
 					else { break; }
@@ -121,11 +136,7 @@ void infoDraw(short player) {
 	}
 	
 
-	cout << "enter 또는 space를 누르면 돌아갑니다." << endl;
-
-	while (1) {
-		if (keyControl() == SPACE || keyControl() == ENTER) break;
-	}
+	system("pause");
 }
 
 void gameStart(short player) {
@@ -142,11 +153,6 @@ void gameStart(short player) {
 		game.gameStart();
 	}
 
-	//cout << "enter 또는 space를 누르면 돌아갑니다." << endl;
-
-	/*while (1) {
-		if (keyControl() == SPACE || keyControl() == ENTER) break;
-	}*/
 }
 
 
