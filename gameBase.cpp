@@ -30,14 +30,6 @@ GameBase::GameBase(int p_n) {
 		}
 	}
 
-	for (int i = 0, x=p->x ; i < row; i++, x++) { //좌표 저장
-		for (int j = 0, y=p->y ; j < col; j++, y++) {
-			position_x[i][j] = x;
-			position_y[i][j] = y;
-			//cout << position_x[i][j] << ", " << position_y[i][j] << endl;
-		}
-	}
-
 	//지뢰 생성
 	setMine(mine);
 
@@ -82,7 +74,7 @@ void GameBase::showGameBoard() {
 				setColor(6, 0); //노란색
 			}
 			else if (base[i][j] == MINE) {
-				setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
+				//setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
 			}
 			gotoxy(x++,y);
 			cout << "■";
@@ -199,14 +191,15 @@ void GameBase::movePlayer() {
 				gameOver();
 			}
 			else if (checked[i - 1][j - 1] == 0) {
+				//주변에 지뢰있으면 1개만음
 				findEmptyBase(i, j, p->x, p->y);
 
 				//=====================값 체크
-				gotoxy(0, 3);
-				//showBase();
-				showCheck();
-				gotoxy(0, 1);
-				cout << p->x << "   " << p->y;
+				//gotoxy(0, 3);
+				////showBase();
+				//showCheck();
+				//gotoxy(0, 1);
+				//cout << p->x << "   " << p->y;
 			}
 			first = false;
 			break;
@@ -253,6 +246,7 @@ string GameBase::showNumber(int i, int j) {
 		}
 	}
 	else if (checked[i - 1][j - 1] == 2) {
+		setColor(11, 0);
 		return "¶";
 	}
 	else {
@@ -261,10 +255,9 @@ string GameBase::showNumber(int i, int j) {
 	
 	return "";
 }
-
 void GameBase::findEmptyBase(int click_i, int click_j, int click_x, int click_y) {
 	
-	int cnt = 0;
+	
 	for (int i = click_i - 1, y = click_y - 1 ; i <= click_i + 1; i++, y++) {
 		for (int j = click_j - 1, x = click_x-1 ; j <= click_j + 1; j++, x++) {
 			if (base[i][j] == WALL || base[i][j] == MINE || checked[i - 1][j - 1] == 2) continue;
@@ -277,19 +270,26 @@ void GameBase::findEmptyBase(int click_i, int click_j, int click_x, int click_y)
 				cout << showNumber(i, j);
 
 				//열린 블럭 체크
-				gotoxy(50, cnt++);
+				/*gotoxy(50, cnt++);
 				cout << "좌표 : " << x << "   " << y;
 				gotoxy(50, cnt++);
-				cout << "인덱스 : " << i << "   " << j;
+				cout << "인덱스 : " << i << "   " << j;*/
 
 
 			}
 		}
 	}
 
-	/*
+	//if (base[click_i][click_j] == 0) { //주변에 지뢰가 없으면
+	//	for (int i = click_i - 1, y = click_y - 1; i <= click_i + 1; i++, y++) {
+	//		for (int j = click_j - 1, x = click_x - 1; j <= click_j + 1; j++, x++) {
+	//			if (base[i][i] == WALL || (i==click_i&&j==click_j)) continue;
+	//			findEmptyBase(i, j, x, y);
+	//		}
+	//	}
+	//}
+	
 	if (base[click_i][click_j] == 0) { //주변에 지뢰가 없으면
-
 		int a = 0, b = 0;
 		while (true) {
 			a = rand() % 3 - 1; // -1 ~ 1
@@ -297,10 +297,8 @@ void GameBase::findEmptyBase(int click_i, int click_j, int click_x, int click_y)
 
 			if (!(a == 0 && b == 0) && base[click_i + a][click_j + b] != WALL && checked[click_i + a][click_j + b] != 2) break;
 		}//랜덤 돌리기
-		
-		findEmptyBase(click_i + a, click_j + b, click_x + a, click_y + b);
-
-	}*/
+		findEmptyBase(click_i + a, click_j + b, click_x + b, click_y + a);
+	}
 }
 
 void GameBase::gameOver() {

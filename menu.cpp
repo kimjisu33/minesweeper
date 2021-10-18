@@ -60,8 +60,8 @@ int menuDraw(short& player) {
 						if (player == 1) player = 2;						
 						else if (player == 2) player = 1;
 
-						/*gotoxy(37, 18);
-						cout << "¢º " << player << "¸í ¢¸";*/
+						gotoxy(37, 18);
+						cout << "¢º " << player << "¸í ¢¸";
 					
 					}
 					else { break; }

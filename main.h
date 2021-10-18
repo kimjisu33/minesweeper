@@ -23,7 +23,7 @@ void gotoxy(int, int);
 //지뢰찾기 판
 //1인용 14*14 40개
 #define PLAY1 14
-#define PLAY1_mine 3 //20
+#define PLAY1_mine 20 //20
 //2인용 15*20 75개
 #define PLAY2_row 15
 #define PLAY2_col 20
@@ -59,8 +59,6 @@ class GameBase {
 	player* p;
 
 	int checked[PLAY1][PLAY1] = { 0, };
-	int position_x[PLAY1][PLAY1] = { 0, };
-	int position_y[PLAY1][PLAY1] = { 0, };
 	bool over;
 	bool clear;
 
