@@ -3,9 +3,16 @@
 int main() {
 	init();
 	srand((unsigned)time(0));
-	titleDraw();
-	GameBase game(1);
+	//titleDraw();
+	/*
+	GameBase game(31,11);
 	game.gameStart();
+	*/
+	GameBase game1(10,10);
+	GameBase game2(40,10);
+
+	game1.gameStart();
+	game2.gameStart();
 
 	return 0;
 }

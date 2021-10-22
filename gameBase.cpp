@@ -1,8 +1,8 @@
 #include "main.h"
 
-GameBase::GameBase(int p_n) {
+GameBase::GameBase(int x, int y) {
 
-	if (p_n == 1) {
+	/*if (p_n == 1) {
 		p = new player(31,11,1);
 		mine = PLAY1_mine; // 지뢰 찾으면 --하려고 넣은듯
 		row = PLAY1;
@@ -15,7 +15,11 @@ GameBase::GameBase(int p_n) {
 		mine = PLAY2_mine; 
 		row = PLAY2_row; //15
 		col = PLAY2_col; //20
-	}
+	}*/
+	p = new player(x, y);
+	mine = PLAY1_mine; // 지뢰 찾으면 --하려고 넣은듯
+	row = PLAY1;
+	col = PLAY1;
 
 	over = false;
 	clear = false;
@@ -66,15 +70,15 @@ void GameBase::showCheck() {
 }
 
 void GameBase::showGameBoard() {
-	int x = 30;
-	int y = 10;
+	int x = p->y-1;
+	int y = p->y-1;
 	for (int i = 0; i < row + 2; i++,y++) {
-		for (int j = 0, x=30; j < col + 2; j++) {
+		for (int j = 0, x= p->y - 1; j < col + 2; j++) {
 			if (base[i][j] == WALL) {
 				setColor(6, 0); //노란색
 			}
 			else if (base[i][j] == MINE) {
-				//setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
+				setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
 			}
 			gotoxy(x++,y);
 			cout << "■";

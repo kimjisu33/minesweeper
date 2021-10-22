@@ -41,15 +41,15 @@ void setColor(int color, int bgcolor);
 
 
 class player {
-	short life; //남은 목숨 (1인용 : 1개 / 2인용 : 2개)
+	//short life; //남은 목숨 (1인용 : 1개 / 2인용 : 2개)
 	
 public:
 	short flag_cnt=0;//사용한 깃발 개수
 	short x; //플레이어의 x좌표
 	short y; //플레이어의 y좌표
 	player(){}
-	player(short x, short y, short life): x(x),y(y),life(life) {}
-	void setData(short x, short y, short life) { player(x, y, life); }
+	player(short x, short y): x(x),y(y) {}
+	void setData(short x, short y) { player(x, y); }
 };
 
 class GameBase {
@@ -75,7 +75,8 @@ class GameBase {
 
 
 public:
-	GameBase(int);
+	GameBase();
+	GameBase(int,int);
 	~GameBase();
 	void showBase(); //배경 값 보기
 	void showCheck();

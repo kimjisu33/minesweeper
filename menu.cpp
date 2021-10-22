@@ -143,14 +143,14 @@ void gameStart(short player) {
 	system("cls");
 	if (player == 1) {
 		//cout << "1인용 게임 화면~" << endl;
-		GameBase game(1);
+		GameBase game(31,11);
 		game.gameStart();
 
 	}
 	else if (player == 2) {
 		//cout << "2인용 게임 화면~" << endl;
-		GameBase game(2);
-		game.gameStart();
+		//GameBase game(2);
+		//game.gameStart();
 	}
 
 }
