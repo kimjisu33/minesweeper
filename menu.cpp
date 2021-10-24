@@ -21,7 +21,7 @@ void titleDraw() {
 
 }
 
-int menuDraw(short& player) {
+int menuDraw(int& player) {
 	//w키 아니고 다른키 눌러도 한칸 올라감 나중에 해결하렴
 
 	setColor(15, 0);
@@ -41,7 +41,7 @@ int menuDraw(short& player) {
 		int n = keyControl();
 		switch (n)
 		{
-		case W: {
+		case W: case UP:{
 			if (y > 20) { //20보다 작으면 안움직임
 				gotoxy(x - 1, y); //원래 있던 자리 화살표 없애기
 				cout << " ";
@@ -69,7 +69,7 @@ int menuDraw(short& player) {
 			}
 			break;
 		}
-		case S: {
+		case S: case DOWN:{
 			if (y == 18) { // player 인원 메뉴 빠져나오기
 				gotoxy(x - 1, y); 
 				cout << " ";
@@ -99,7 +99,7 @@ int menuDraw(short& player) {
 	}
 }
 
-void infoDraw(short player) {
+void infoDraw(int player) {
 	system("cls");
 
 	if (player == 1) {
@@ -108,53 +108,63 @@ void infoDraw(short player) {
 			<< "하 : S" << endl
 			<< "좌 : A" << endl
 			<< "우 : D" << endl
-			<< "지뢰찾기 : Enter" << endl
-			<< "깃발 설치하기 / 수거하기 : Shift" << endl<<endl;
-		cout << "14 x 14 의 땅에서 40개의 지뢰 찾기!!" << endl
+			<< "지뢰찾기 : Space" << endl
+			<< "깃발 설치하기 / 수거하기 : Tab" << endl<<endl;
+		cout << "14 x 14 의 땅에서 25개의 지뢰 찾기!!" << endl
 			<< "지뢰를 선택하면 게임 오버!!!" << endl << endl;
 	}
 	else if (player == 2) {
 		cout << "2인용 설명 화면~" << endl;
-		cout << "Player1" << endl
+		cout << "PLAYER 1" << endl
 			<< "상 : W" << endl
 			<< "하 : S" << endl
 			<< "좌 : A" << endl
 			<< "우 : D" << endl
 			<< "지뢰찾기 : Space" << endl
-			<< "깃발 설치하기 / 수거하기 : Ctrl" << endl << endl;
-		cout << "Player2" << endl
+			<< "깃발 설치하기 / 수거하기 : Tab" << endl << endl;
+		cout << "PLAYER 2" << endl
 			<< "상 : 방향키 ↑" << endl
 			<< "하 : 방향키 ↓" << endl
 			<< "좌 : 방향키 →" << endl
 			<< "우 : 방향키 →" << endl
 			<< "지뢰찾기 : Enter" << endl
-			<< "깃발 설치하기 / 수거하기 : Shift" << endl << endl;
-		cout << "15 x 20 의 땅에서 75개의 지뢰 찾기!!" << endl
-			<< "10 x 5의 개인칸에서 지뢰를 모두 찾으면 공동 구역의 지뢰를 찾을 수 있다." << endl
-			<< "지뢰를 선택하면 게임 오버!!!" << endl
-			<< "모든 지뢰를 찾은 후 더 많은 지뢰를 찾은 사람이 승리" << endl;
+			<< "깃발 설치하기 / 수거하기 : M" << endl << endl;
+		cout << "14 x 14 의 땅에서 25개의 지뢰 찾기!!" << endl
+			<< "지뢰를 선택하면 게임 오버!!!" << endl << endl;
+		cout << "먼저 지뢰를 모두 찾은 사람이 승리!" << endl;
 	}
 	
 
 	system("pause");
 }
 
-void gameStart(short player) {
-	system("cls");
-	if (player == 1) {
-		//cout << "1인용 게임 화면~" << endl;
-		GameBase game(31,11);
-		game.gameStart();
-
-	}
-	else if (player == 2) {
-		//cout << "2인용 게임 화면~" << endl;
-		//GameBase game(2);
-		//game.gameStart();
-	}
-
-}
-
-
-
+//GameBase game1(10, 10);
+//GameBase game2(30, 10);
+//void gameStartMenu(int player) {
+//	system("cls");
+//	if (player == 1) {
+//		//cout << "1인용 게임 화면~" << endl;
+//		sGameBase game(31,11);
+//		game.gameStart();
+//
+//	}
+//	else if (player == 2) {
+//		//cout << "2인용 게임 화면~" << endl;
+//		game1.showGameBoard();
+//		game2.showGameBoard();
+//		thread t1(gameStart1);
+//		thread t2(gameStart2);
+//		t1.join();
+//		t2.join();
+//			
+//	}
+//
+//}
+//
+//void gameStart1() {
+//	game1.movePlayer();
+//}
+//void gameStart2() {
+//	game2.movePlayer();
+//}
 

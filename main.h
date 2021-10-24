@@ -6,6 +6,7 @@
 #include<time.h>
 #include<string.h>
 #include<stdbool.h>
+#include<thread>
 using namespace std;
 
 void init(); //콘솔 설정
@@ -16,14 +17,19 @@ void gotoxy(int, int);
 #define S 1
 #define A 2
 #define D 3
-#define SPACE 4
-#define ENTER 5
-#define SHIFT 6
+#define UP 4
+#define DOWN 5
+#define LEFT 6
+#define RIGHT 7
+#define SPACE 8
+#define ENTER 9
+#define TAP 10
+#define M 11
 
 //지뢰찾기 판
 //1인용 14*14 40개
 #define PLAY1 14
-#define PLAY1_mine 20 //20
+#define PLAY1_mine 25 //20
 //2인용 15*20 75개
 #define PLAY2_row 15
 #define PLAY2_col 20
@@ -34,11 +40,12 @@ void gotoxy(int, int);
 
 int keyControl(); //키보드
 void titleDraw(); //타이틀 그리기
-int menuDraw(short& player); //메뉴 화면
-void infoDraw(short player); //게임 설명
-void gameStart(short player); //게임 화면
+int menuDraw(int& player); //메뉴 화면
+void infoDraw(int player); //게임 설명
+//void gameStartMenu(int player); //게임 화면
 void setColor(int color, int bgcolor);
-
+void gameStart1();
+void gameStart2();
 
 class player {
 	//short life; //남은 목숨 (1인용 : 1개 / 2인용 : 2개)
@@ -48,8 +55,8 @@ public:
 	short x; //플레이어의 x좌표
 	short y; //플레이어의 y좌표
 	player(){}
-	player(short x, short y): x(x),y(y) {}
-	void setData(short x, short y) { player(x, y); }
+	player(int x, int y): x(x),y(y) {}
+	void setData(int x, int y) { player(x, y); }
 };
 
 class GameBase {
@@ -57,15 +64,22 @@ class GameBase {
 	int mine; //지뢰개수
 	int row, col;
 	player* p;
+	int p_n;
 
 	int checked[PLAY1][PLAY1] = { 0, };
 	bool over;
 	bool clear;
 
+	int key_up;
+	int key_down;
+	int key_left;
+	int key_right;
+	int key_break;
+	int key_flag;
+
 	void setMine(int);
 	void countMine(int, int, bool);
-	void showGameBoard();
-	void movePlayer();
+	
 	string showNumber(int, int);
 	void findEmptyBase(int, int, int, int);
 
@@ -76,11 +90,13 @@ class GameBase {
 
 public:
 	GameBase();
-	GameBase(int,int);
+	GameBase(int,int,int);
 	~GameBase();
 	void showBase(); //배경 값 보기
 	void showCheck();
 
+	void showGameBoard();
+	void movePlayer();
 	void gameStart();
 	
 };

@@ -28,15 +28,27 @@ void setColor(int color, int bgcolor) {
 
 int keyControl() {
 	int temp = _getch();
+	int temp2;
 
 	switch (temp) {
 	case 'w':case'W': return W;
 	case 'a':case'A': return A;
 	case 's':case'S': return S;
 	case 'd':case'D': return D;
+	case 'm':case'M': return M;
+	case 224: {
+		temp2 = _getch();
+		switch (temp2)
+		{
+		case 72:return UP;
+		case 80:return DOWN;
+		case 77:return RIGHT;
+		case 75:return LEFT;
+		}
+	}
 	case 13: return ENTER;
 	case 32: return SPACE;
-	case 9: return SHIFT; //shift가 안먹어서 임시로 tap 키 사용
+	case 9: return TAP; //shift가 안먹어서 임시로 tap 키 사용
 	}
 
 	return 0;
