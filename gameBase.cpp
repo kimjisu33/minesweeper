@@ -1,7 +1,8 @@
 #include "main.h"
 
 bool GameBase::over = false;
-bool GameBase::clear = false;
+//bool GameBase::clear = false;
+
 GameBase::GameBase(int n, int x, int y) {
 	p_n = n;
 	if (p_n == 1) { //1인용
@@ -26,6 +27,8 @@ GameBase::GameBase(int n, int x, int y) {
 		key_break = ENTER;
 		key_flag = M;
 	}
+
+	clear = false;
 	p = new player(x, y);
 	mine = PLAY1_mine; // 지뢰 찾으면 --하려고 넣은듯
 	row = PLAY1;
@@ -83,11 +86,12 @@ void GameBase::showGameBoard() {
 	for (int i = 0; i < row + 2; i++,y++) {
 		for (int j = 0, x= p->x-1 ; j < col + 2; j++) {
 			if (base[i][j] == WALL) {
-				setColor(6, 0); //노란색 
+				if (p_n == 1 || p_n == 2)setColor(6, 0); //노란색 
+				else setColor(9,0);
 			}
-			//else if (base[i][j] == MINE) {
-			//	setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
-			//}
+			else if (base[i][j] == MINE) {
+				setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
+			}
 			gotoxy(x++,y);
 			cout << "■";
 			//cout << base[i][j] << " ";
@@ -201,19 +205,12 @@ void GameBase::movePlayer() {
 			else if (checked[i - 1][j - 1] == 0) {
 				//주변에 지뢰있으면 1개만음
 				findEmptyBase(i, j, p->x, p->y);
-
-				//=====================값 체크
-				//gotoxy(0, 3);
-				////showBase();
-				//showCheck();
-				//gotoxy(0, 1);
-				//cout << p->x << "   " << p->y;
 			}
 			first = false;
 		}
 		else if (key == key_flag) {
 			if (checked[i - 1][j - 1] == 0) {
-				checked[i - 1][j - 1] = 2; //깃발
+				checked[i - 1][j - 1] = 2; //깃발 설치
 				gotoxy(p->x, p->y);
 				setColor(4, 0);
 				cout << showNumber(i, j);
@@ -229,8 +226,15 @@ void GameBase::movePlayer() {
 		}
 		
 		setColor(15, 0);
-		if (mine == (p->flag_cnt)) {//mine과 설치한 깃발의 갯수가 같은가? || (추가해야함)지뢰만 남았는가
+		if (mine==(p->flag_cnt)) {
 			checkClear();
+			if (clear) {
+				over = true;
+			}
+		}
+		else if (row * col - broken_block_cnt == mine) {
+			clear = true;
+			over = true;
 		}
 	}
 	if(clear) gameClear();
@@ -268,18 +272,11 @@ void GameBase::findEmptyBase(int click_i, int click_j, int click_x, int click_y)
 			if (base[i][j] == WALL || base[i][j] == MINE || checked[i - 1][j - 1] == 2) continue;
 
 			if (checked[i - 1][j - 1] == 0) {
-
+				broken_block_cnt++;
 				checked[i - 1][j - 1] = 1; //숫자
 				setColor(15, 0);
 				gotoxy(x, y);
 				cout << showNumber(i, j);
-
-				//열린 블럭 체크
-				/*gotoxy(50, cnt++);
-				cout << "좌표 : " << x << "   " << y;
-				gotoxy(50, cnt++);
-				cout << "인덱스 : " << i << "   " << j;*/
-
 
 			}
 		}

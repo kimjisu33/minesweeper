@@ -22,7 +22,6 @@ void titleDraw() {
 }
 
 int menuDraw(int& player) {
-	//w키 아니고 다른키 눌러도 한칸 올라감 나중에 해결하렴
 
 	setColor(15, 0);
 

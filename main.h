@@ -29,7 +29,7 @@ void gotoxy(int, int);
 //지뢰찾기 판
 //1인용 14*14 40개
 #define PLAY1 14
-#define PLAY1_mine 25 //20
+#define PLAY1_mine 1 //20
 //2인용 15*20 75개
 #define PLAY2_row 15
 #define PLAY2_col 20
@@ -51,8 +51,8 @@ class player {
 	//short life; //남은 목숨 (1인용 : 1개 / 2인용 : 2개)
 	
 public:
-	short flag_cnt=0;//사용한 깃발 개수
-	short x; //플레이어의 x좌표
+	int flag_cnt=0;//사용한 깃발 개수
+	int x; //플레이어의 x좌표
 	short y; //플레이어의 y좌표
 	player(){}
 	player(int x, int y): x(x),y(y) {}
@@ -67,8 +67,9 @@ class GameBase {
 	int p_n;
 
 	int checked[PLAY1][PLAY1] = { 0, };
+	int broken_block_cnt = 0;
 	static bool over;
-	static bool clear;
+	bool clear;
 
 	int key_up;
 	int key_down;
