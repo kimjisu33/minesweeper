@@ -215,6 +215,7 @@ void GameBase::movePlayer() {
 				setColor(4, 0);
 				cout << showNumber(i, j);
 				p->flag_cnt++;
+				first = false;
 			}
 			else if (checked[i - 1][j - 1] == 2) { //±ê¹ß Áö¿ì±â
 				checked[i - 1][j - 1] = 0;
@@ -222,6 +223,7 @@ void GameBase::movePlayer() {
 				setColor(4, 0);
 				cout << showNumber(i, j);
 				p->flag_cnt--;
+				if (broken_block_cnt == 0) first = true;
 			}
 		}
 		
