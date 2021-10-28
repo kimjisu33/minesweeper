@@ -1,7 +1,7 @@
 #include "main.h"
 
-GameBase game1(1,10, 10);
-GameBase game2(2,30, 10);
+GameBase game1(2,11, 11);
+GameBase game2(3,30, 11);
 
 void gameStart1() {
 	game1.movePlayer();
@@ -14,20 +14,17 @@ int main() {
 	srand((unsigned)time(0));
 	//titleDraw();
 	
-	/*GameBase game(31,11);
-	game.gameStart();*/
-
-	/*GameBase game1(10,10);
-	GameBase game2(30,10);*/
+	GameBase game(1,31,11);
+	game.gameStart();
 	
-	game1.showGameBoard();
+	/*game1.showGameBoard();
 	game2.showGameBoard();
 
 	thread t1(gameStart1);
 	thread t2(gameStart2);
 	
 	t1.join();
-	t2.join();
+	t2.join();*/
 	
 	//gameStart(10);
 	return 0;

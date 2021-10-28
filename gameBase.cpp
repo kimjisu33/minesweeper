@@ -1,14 +1,24 @@
 #include "main.h"
 
+bool GameBase::over = false;
+bool GameBase::clear = false;
 GameBase::GameBase(int n, int x, int y) {
-	if (n == 1) {
+	p_n = n;
+	if (p_n == 1) { //1인용
+		key_up = W;
+		key_down = S;
+		key_left = A;
+		key_right = D;
+		key_break = ENTER;
+		key_flag = TAP;
+	}else if (p_n == 2) { //2인용 1p
 		key_up = W;
 		key_down = S;
 		key_left = A;
 		key_right = D;
 		key_break = SPACE;
 		key_flag = TAP;
-	}else if (n == 2) {
+	}else if (p_n == 3) { //2인용 2p
 		key_up = UP;
 		key_down = DOWN;
 		key_left = LEFT;
@@ -21,8 +31,6 @@ GameBase::GameBase(int n, int x, int y) {
 	row = PLAY1;
 	col = PLAY1;
 
-	over = false;
-	clear = false;
 	base = new int*[row +2]; //행 2차원 할당, 벽포함
 	for (int i = 0; i < row+2 ; i++) {
 		base[i] = new int[col + 2]; //열
@@ -75,11 +83,11 @@ void GameBase::showGameBoard() {
 	for (int i = 0; i < row + 2; i++,y++) {
 		for (int j = 0, x= p->x-1 ; j < col + 2; j++) {
 			if (base[i][j] == WALL) {
-				setColor(6, 0); //노란색
+				setColor(6, 0); //노란색 
 			}
-			else if (base[i][j] == MINE) {
-				//setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
-			}
+			//else if (base[i][j] == MINE) {
+			//	setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
+			//}
 			gotoxy(x++,y);
 			cout << "■";
 			//cout << base[i][j] << " ";
@@ -219,105 +227,7 @@ void GameBase::movePlayer() {
 				p->flag_cnt--;
 			}
 		}
-		/*
-		switch (key)
-		{
-		case W: case UP: { //위로 올라가기 y감소
-			if (p->y > min_y) {
-				gotoxy(p->x, p->y);
-				setColor(15,0);
-				cout << showNumber(i, j);
-				i--;
-				gotoxy(p->x, --p->y);
-				setColor(4, 0);
-				cout << showNumber(i, j);
-				
-			}
-			break;
-		}
-		case S: case DOWN : { //아래로 내려가기 y증가
-			 if (p->y < max_y) {
-				 gotoxy(p->x, p->y);
-				 setColor(15, 0);
-				 cout << showNumber(i, j);
-				 i++;
-				 gotoxy(p->x, ++p->y);
-				 setColor(4, 0);
-				 cout << showNumber(i, j);
-				
-			}
-			break;
-		}
-		case D: case RIGHT: { //오른쪽으로 이동하기 x증가
-			if (p->x < max_x) {
-				gotoxy(p->x, p->y);
-				setColor(15, 0);
-				cout << showNumber(i, j);
-				j++;
-				gotoxy(++p->x, p->y);
-				setColor(4, 0);
-				cout << showNumber(i, j);
-				
-			}
-			break;
-		}
-		case A: case LEFT:{ //왼쪽으로 이동하기 x감소
-			if (p->x > min_x) {
-				gotoxy(p->x, p->y);
-				setColor(15, 0);
-				cout << showNumber(i, j);
-				gotoxy(--p->x, p->y);
-				j--;
-				setColor(4, 0);
-				cout << showNumber(i, j);
-				
-			}
-			break;
-		}
-		case ENTER: {
-			
-			if (first && base[i][j] == MINE) { //처음 클릭하는 칸은 지뢰가 아니어야 함
-				setMine(1);
-				countMine(i, j, false);
-				base[i][j] = 0;
-			}
-			if (base[i][j]==MINE&& checked[i - 1][j - 1] != 2) {
-				gameOver();
-			}
-			else if (checked[i - 1][j - 1] == 0) {
-				//주변에 지뢰있으면 1개만음
-				findEmptyBase(i, j, p->x, p->y);
-
-				//=====================값 체크
-				//gotoxy(0, 3);
-				////showBase();
-				//showCheck();
-				//gotoxy(0, 1);
-				//cout << p->x << "   " << p->y;
-			}
-			first = false;
-			break;
-		}
-		case SHIFT: {
-			if (checked[i - 1][j - 1] == 0) {
-				checked[i - 1][j - 1] = 2; //깃발
-				gotoxy(p->x, p->y);
-				setColor(4, 0);
-				cout << showNumber(i, j);
-				p->flag_cnt++;
-			}
-			else if (checked[i - 1][j - 1] == 2) { //깃발 지우기
-				checked[i - 1][j - 1] = 0;
-				gotoxy(p->x, p->y);
-				setColor(4, 0);
-				cout << showNumber(i, j);
-				p->flag_cnt--;
-			}
-			break;
-		}
-		default: {}
-		}
-		*/
+		
 		setColor(15, 0);
 		if (mine == (p->flag_cnt)) {//mine과 설치한 깃발의 갯수가 같은가? || (추가해야함)지뢰만 남았는가
 			checkClear();
@@ -397,9 +307,26 @@ void GameBase::findEmptyBase(int click_i, int click_j, int click_x, int click_y)
 }
 
 void GameBase::gameOver() {
-	system("cls"); 
+	int x=30, y=10;
+	
+	if (p_n == 2) {
+		x = 10;
+	}else if(p_n == 3) {
+		x = 30;
+	}
 
 	setColor(4, 0);
+	for (int i = 0,b=y; i < row + 2; i++,b++) {
+		for (int j = 0, a=x ; j < col + 2; j++,a++) {
+			if (base[i][j] == MINE) {
+				gotoxy(a, b);
+				cout << "※";
+			}
+		}
+		cout << endl;
+	}
+	system("pause");
+	system("cls");
 	int a = 20; int b = 7;
 	gotoxy(a, b++);
 	cout << "  _____            __  __  ______    ____  __      __ ______  _____" << endl;
@@ -420,6 +347,27 @@ void GameBase::gameOver() {
 	system("pause");
 }
 void GameBase::gameClear() {
+	int x = 30, y = 10;
+
+	if (p_n == 2) {
+		x = 10;
+	}
+	else if (p_n == 3) {
+		x = 30;
+	}
+
+	setColor(10, 0);
+	for (int i = 0, b = y; i < row + 2; i++, b++) {
+		for (int j = 0, a = x; j < col + 2; j++, a++) {
+			if (base[i][j] == MINE) {
+				gotoxy(a, b);
+				cout << "♣";
+			}
+		}
+		cout << endl;
+	}
+	system("pause");
+
 	system("cls");
 	setColor(6, 0);
 	int a = 20; int b = 7;

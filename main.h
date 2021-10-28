@@ -67,8 +67,8 @@ class GameBase {
 	int p_n;
 
 	int checked[PLAY1][PLAY1] = { 0, };
-	bool over;
-	bool clear;
+	static bool over;
+	static bool clear;
 
 	int key_up;
 	int key_down;

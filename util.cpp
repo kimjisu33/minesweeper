@@ -48,7 +48,7 @@ int keyControl() {
 	}
 	case 13: return ENTER;
 	case 32: return SPACE;
-	case 9: return TAP; //shift가 안먹어서 임시로 tap 키 사용
+	case 9: return TAP;
 	}
 
 	return 0;
