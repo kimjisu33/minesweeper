@@ -7,6 +7,8 @@
 #include<string.h>
 #include<stdbool.h>
 #include<thread>
+#include<mmsystem.h>
+#pragma comment(lib,"winmm.lib")
 using namespace std;
 
 void init(); //콘솔 설정

@@ -1,30 +1,32 @@
 #include "main.h"
 
-GameBase game1(2,11, 11);
-GameBase game2(3,30, 11);
 
-void gameStart1() {
-	game1.movePlayer();
-}
-void gameStart2() {
-	game2.movePlayer();
-}
+//GameBase game1(2, 15, 11);
+//GameBase game2(3, 45, 11);
+////전역하면 랜덤 안바뀐다고....
+//void gameStart1() {
+//	game1.movePlayer();
+//}
+//void gameStart2() {
+//	game2.movePlayer();
+//}
 int main() {
 	init();
 	srand((unsigned)time(0));
 	//titleDraw();
 	
-	/*GameBase game(1,31,11);
-	game.gameStart();*/
+	GameBase game(1,31,11);
+	game.gameStart();
+
 	
-	game1.showGameBoard();
+	/*game1.showGameBoard();
 	game2.showGameBoard();
 
 	thread t1(gameStart1);
 	thread t2(gameStart2);
 	
 	t1.join();
-	t2.join();
+	t2.join();*/
 	
 	return 0;
 }

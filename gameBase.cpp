@@ -4,6 +4,7 @@ bool GameBase::over = false;
 //bool GameBase::clear = false;
 
 GameBase::GameBase(int n, int x, int y) {
+	
 	p_n = n;
 	if (p_n == 1) { //1인용
 		key_up = W;
@@ -87,7 +88,7 @@ void GameBase::showGameBoard() {
 		for (int j = 0, x= p->x-1 ; j < col + 2; j++) {
 			if (base[i][j] == WALL) {
 				if (p_n == 1 || p_n == 2)setColor(6, 0); //노란색 
-				else setColor(9,0);
+				else setColor(9,0); //파란색
 			}
 			else if (base[i][j] == MINE) {
 				setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
@@ -112,6 +113,7 @@ void GameBase::countMine(int m_i, int m_j, bool plus) {
 	}
 }
 void GameBase::setMine(int mine) {
+
 	int cnt = 0;
 	while (cnt < mine) {
 		int a = rand() % row + 1; //1~row
@@ -142,9 +144,9 @@ void GameBase::movePlayer() {
 	while (!over && !clear) {
 
 		setColor(15, 0);
-		gotoxy(max_x - 8, max_y+5);
+		gotoxy(max_x - 8, max_y+3);
 		cout << "깃발 : " << mine - (p->flag_cnt)<<"    ";
-		gotoxy(max_x - 3, max_y+5);
+		gotoxy(max_x - 3, max_y+3);
 		cout<< " / " << mine;
 
 		int key = keyControl();
@@ -210,12 +212,14 @@ void GameBase::movePlayer() {
 		}
 		else if (key == key_flag) {
 			if (checked[i - 1][j - 1] == 0) {
+				PlaySound(TEXT("sound\\flag_install"), NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 				checked[i - 1][j - 1] = 2; //깃발 설치
 				gotoxy(p->x, p->y);
 				setColor(4, 0);
 				cout << showNumber(i, j);
 				p->flag_cnt++;
 				first = false;
+				
 			}
 			else if (checked[i - 1][j - 1] == 2) { //깃발 지우기
 				checked[i - 1][j - 1] = 0;
@@ -309,9 +313,10 @@ void GameBase::gameOver() {
 	int x=30, y=10;
 	
 	if (p_n == 2) {
-		x = 10;
-	}else if(p_n == 3) {
-		x = 30;
+		x = 14;
+	}
+	else if (p_n == 3) {
+		x = 44;
 	}
 
 	setColor(4, 0);
@@ -349,10 +354,10 @@ void GameBase::gameClear() {
 	int x = 30, y = 10;
 
 	if (p_n == 2) {
-		x = 10;
+		x = 14;
 	}
 	else if (p_n == 3) {
-		x = 30;
+		x = 44;
 	}
 
 	setColor(10, 0);
