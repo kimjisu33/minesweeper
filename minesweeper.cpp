@@ -1,36 +1,5 @@
 #include "main.h"
 
-//
-//int main() {
-//	init();
-//	srand((unsigned)time(0));
-//	//titleDraw();
-//	
-//	/*GameBase game(1,31,11);
-//	game.gameStart();*/
-//
-//	/*GameBase game1(2, 15, 11);
-//	GameBase game2(3, 45, 11);
-//	game1.showGameBoard();
-//	game2.showGameBoard();*/
-//
-//	thread t1([]() {
-//		srand((unsigned)time(0));
-//		GameBase game1(2, 15, 11);
-//		game1.gameStart();
-//		});
-//	thread t2([]() {
-//		this_thread::sleep_for(std::chrono::milliseconds(1000));
-//		srand((unsigned)time(0));
-//		GameBase game2(3, 45, 11);
-//		game2.gameStart();
-//		});
-//	
-//	t1.join();
-//	t2.join();
-//	
-//	return 0;
-//}
 
 int main() {
 	srand((unsigned)time(0));
@@ -49,7 +18,7 @@ int main() {
 	}
 	
 
-	cout << endl << endl;
+	
 	return 0;
 }
 

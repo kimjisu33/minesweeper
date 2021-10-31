@@ -48,13 +48,12 @@ void gameStartMenu(int player); //게임 화면
 void setColor(int color, int bgcolor);
 
 class player {
-	//short life; //남은 목숨 (1인용 : 1개 / 2인용 : 2개)
 	
 public:
 	int flag_cnt=0;//사용한 깃발 개수
 	int x; //플레이어의 x좌표
 	short y; //플레이어의 y좌표
-	player(){}
+	player():x(0),y(0){}
 	player(int x, int y): x(x),y(y) {}
 	void setData(int x, int y) { player(x, y); }
 };
@@ -68,8 +67,7 @@ class GameBase {
 
 	int checked[PLAY1][PLAY1] = { 0, };
 	int broken_block_cnt = 0;
-	static bool over;
-	bool clear;
+	
 
 	int key_up;
 	int key_down;
@@ -90,6 +88,8 @@ class GameBase {
 
 
 public:
+	static bool over;
+	bool clear;
 	GameBase();
 	GameBase(int,int,int);
 	~GameBase();

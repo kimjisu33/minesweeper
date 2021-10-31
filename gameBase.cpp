@@ -1,7 +1,6 @@
 #include "main.h"
 
 bool GameBase::over = false;
-//bool GameBase::clear = false;
 
 GameBase::GameBase(int n, int x, int y) {
 	
@@ -31,7 +30,7 @@ GameBase::GameBase(int n, int x, int y) {
 
 	clear = false;
 	p = new player(x, y);
-	mine = PLAY1_mine; // 지뢰 찾으면 --하려고 넣은듯
+	mine = PLAY1_mine;
 	row = PLAY1;
 	col = PLAY1;
 
@@ -100,9 +99,9 @@ void GameBase::showGameBoard() {
 				if (p_n == 1 || p_n == 2)setColor(6, 0); //노란색 
 				else setColor(9,0); //파란색
 			}
-			else if (base[i][j] == MINE) {
-				setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
-			}
+			//else if (base[i][j] == MINE) {
+			//	setColor(3, 0); //지뢰 위치 확인 게임 완성하면 지우기
+			//}
 			gotoxy(x++,y);
 			cout << "■";
 			//cout << base[i][j] << " ";
@@ -330,6 +329,8 @@ void GameBase::findEmptyBase(int click_i, int click_j, int click_x, int click_y)
 }
 
 void GameBase::gameOver() {
+	PlaySound(TEXT("sound\\game_over"), NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
+
 	int x=30, y=10;
 
 	setColor(4, 0);
@@ -392,6 +393,8 @@ void GameBase::gameOver() {
 	system("pause");
 }
 void GameBase::gameClear() {
+	PlaySound(TEXT("sound\\game_clear"), NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
+
 	int x = 30, y = 10;
 
 	if (p_n == 2) {

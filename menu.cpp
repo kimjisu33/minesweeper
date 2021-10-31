@@ -3,6 +3,7 @@
 
 
 void titleDraw() {
+	setColor(11, 0);
 	int a = 25; int b = 7;
 	gotoxy(a, b++);
 	cout << "minesweeper" << endl;
@@ -55,7 +56,7 @@ int menuDraw(int& player) {
 				gotoxy(37, 18);
 				cout << "▶ " << player << "명 ◀";
 				while (1) {
-					if (keyControl() == A || keyControl() == D) { //인원수 정하기
+					if (keyControl() == A || keyControl() == D|| keyControl() == LEFT || keyControl() == RIGHT) { //인원수 정하기
 						if (player == 1) player = 2;						
 						else if (player == 2) player = 1;
 
@@ -70,6 +71,7 @@ int menuDraw(int& player) {
 		}
 		case S: case DOWN:{
 			if (y == 18) { // player 인원 메뉴 빠져나오기
+				
 				gotoxy(x - 1, y); 
 				cout << " ";
 				y += 2;
@@ -87,9 +89,11 @@ int menuDraw(int& player) {
 			break;
 		}
 		case SPACE: {
+			PlaySound(TEXT("sound\\menu_click"), NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 			return y - 20;
 		}
 		case ENTER: {
+			PlaySound(TEXT("sound\\menu_click"), NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 			return y - 20;
 		}
 		default: {}
@@ -102,18 +106,20 @@ void infoDraw(int player) {
 	system("cls");
 
 	if (player == 1) {
-		cout << "1인용 설명 화면~" << endl;
+		cout << "1인용 설명" << endl<<endl;
+
 		cout << "상 : W" << endl
 			<< "하 : S" << endl
 			<< "좌 : A" << endl
 			<< "우 : D" << endl
 			<< "지뢰찾기 : Space" << endl
 			<< "깃발 설치하기 / 수거하기 : Tab" << endl<<endl;
-		cout << "14 x 14 의 땅에서 25개의 지뢰 찾기!!" << endl
-			<< "지뢰를 선택하면 게임 오버!!!" << endl << endl;
+		
+		cout << "14 x 14 의 땅에서 25개의 지뢰 찾기 !!" << endl
+			<< "지뢰를 선택하면 게임 오버 !!!" << endl << endl<<endl;
 	}
 	else if (player == 2) {
-		cout << "2인용 설명 화면~" << endl;
+		cout << "2인용 설명" << endl<<endl;
 		cout << "PLAYER 1" << endl
 			<< "상 : W" << endl
 			<< "하 : S" << endl
@@ -121,6 +127,7 @@ void infoDraw(int player) {
 			<< "우 : D" << endl
 			<< "지뢰찾기 : Space" << endl
 			<< "깃발 설치하기 / 수거하기 : Tab" << endl << endl;
+
 		cout << "PLAYER 2" << endl
 			<< "상 : 방향키 ↑" << endl
 			<< "하 : 방향키 ↓" << endl
@@ -128,9 +135,10 @@ void infoDraw(int player) {
 			<< "우 : 방향키 →" << endl
 			<< "지뢰찾기 : Enter" << endl
 			<< "깃발 설치하기 / 수거하기 : M" << endl << endl;
+
 		cout << "14 x 14 의 땅에서 25개의 지뢰 찾기!!" << endl
-			<< "지뢰를 선택하면 게임 오버!!!" << endl << endl;
-		cout << "먼저 지뢰를 모두 찾은 사람이 승리!" << endl;
+			<< "지뢰를 선택하면 게임 오버!!!(상대방의 승리)" << endl;
+		cout << "먼저 지뢰를 모두 찾은 사람이 승리!" << endl << endl<<endl;
 	}
 	
 
@@ -140,8 +148,10 @@ void infoDraw(int player) {
 
 void gameStartMenu(int player) {
 	system("cls");
+	GameBase::over = false;
 	if (player == 1) {
 		//cout << "1인용 게임 화면~" << endl;
+		
 		GameBase game(1,31,11);
 		game.gameStart();
 
