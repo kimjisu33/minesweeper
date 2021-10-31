@@ -84,6 +84,16 @@ void GameBase::showCheck() { //Ã¼Å©¿ë
 void GameBase::showGameBoard() {
 	int x = p->x-1;
 	int y = p->y-1;
+
+	if (p_n == 2) {
+		gotoxy(x,y-3);
+		cout << "PLAYER 1";
+	}
+	else if (p_n == 3) {
+		gotoxy(x, y - 3);
+		cout << "PLAYER 2";
+	}
+
 	for (int i = 0; i < row + 2; i++,y++) {
 		for (int j = 0, x= p->x-1 ; j < col + 2; j++) {
 			if (base[i][j] == WALL) {
@@ -200,12 +210,16 @@ void GameBase::movePlayer() {
 				setMine(1);
 				countMine(i, j, false);
 				base[i][j] = 0;
+				for (int a = i - 1; a <= i + 1; a++) {
+					for (int b = j - 1; b <= j + 1; b++) {
+						if (base[a][b] == MINE)base[i][j]++;
+					}
+				}
 			}
 			if (base[i][j] == MINE && checked[i - 1][j - 1] != 2) {
 				gameOver();
 			}
 			else if (checked[i - 1][j - 1] == 0) {
-				//ÁÖº¯¿¡ Áö·ÚÀÖÀ¸¸é 1°³¸¸À½
 				findEmptyBase(i, j, p->x, p->y);
 			}
 			first = false;
@@ -222,6 +236,7 @@ void GameBase::movePlayer() {
 				
 			}
 			else if (checked[i - 1][j - 1] == 2) { //±ê¹ß Áö¿ì±â
+				PlaySound(TEXT("sound\\flag_delete"), NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 				checked[i - 1][j - 1] = 0;
 				gotoxy(p->x, p->y);
 				setColor(4, 0);
@@ -236,6 +251,11 @@ void GameBase::movePlayer() {
 			checkClear();
 			if (clear) {
 				over = true;
+				setColor(15, 0);
+				gotoxy(max_x - 8, max_y + 3);
+				cout << "±ê¹ß : " << mine - (p->flag_cnt) << "    ";
+				gotoxy(max_x - 3, max_y + 3);
+				cout << " / " << mine;
 			}
 		}
 		else if (row * col - broken_block_cnt == mine) {
@@ -311,7 +331,8 @@ void GameBase::findEmptyBase(int click_i, int click_j, int click_x, int click_y)
 
 void GameBase::gameOver() {
 	int x=30, y=10;
-	
+
+	setColor(4, 0);
 	if (p_n == 2) {
 		x = 14;
 	}
@@ -319,7 +340,7 @@ void GameBase::gameOver() {
 		x = 44;
 	}
 
-	setColor(4, 0);
+	
 	for (int i = 0,b=y; i < row + 2; i++,b++) {
 		for (int j = 0, a=x ; j < col + 2; j++,a++) {
 			if (base[i][j] == MINE) {
@@ -329,9 +350,20 @@ void GameBase::gameOver() {
 		}
 		cout << endl;
 	}
+
+	gotoxy(15, 33);
 	system("pause");
 	system("cls");
+
 	int a = 20; int b = 7;
+	if (p_n == 2) {
+		gotoxy(a, b-1);
+		cout << "PLAYER 1ÀÇ";
+	}
+	else if (p_n == 3) {
+		gotoxy(a, b-1);
+		cout << "PLAYER 2ÀÇ";
+	}
 	gotoxy(a, b++);
 	cout << "  _____            __  __  ______    ____  __      __ ______  _____" << endl;
 	gotoxy(a, b++);
@@ -345,8 +377,17 @@ void GameBase::gameOver() {
 	gotoxy(a, b++);
 	cout << " \\_____|/_/    \\_\\|_|  |_||______|  \\____/     \\/    |______||_|  \\_\\" << endl;
 	
-	over = true;
 	setColor(15, 0);
+	if (p_n == 2) {
+		gotoxy(a, b+5);
+		cout << "PLAYER 2ÀÇ ½Â¸® !!!";
+	}
+	else if (p_n == 3) {
+		gotoxy(a, b+5);
+		cout << "PLAYER 1ÀÇ ½Â¸® !!!";
+	}
+	over = true;
+	
 	gotoxy(a, b+10);
 	system("pause");
 }
@@ -370,11 +411,20 @@ void GameBase::gameClear() {
 		}
 		cout << endl;
 	}
+	gotoxy(15, 33);
 	system("pause");
-
 	system("cls");
 	setColor(6, 0);
+
 	int a = 20; int b = 7;
+	if (p_n == 2) {
+		gotoxy(a, b - 2);
+		cout << "PLAYER 1ÀÇ";
+	}
+	else if (p_n == 3) {
+		gotoxy(a, b - 2);
+		cout << "PLAYER 2ÀÇ";
+	}
 	gotoxy(a, b++);
 	cout << " ::::::::  :::        ::::::::::     :::     :::::::::     :::    :::" << endl;
 	gotoxy(a, b++);
@@ -392,6 +442,15 @@ void GameBase::gameClear() {
 
 
 	setColor(15, 0);
+
+	if (p_n == 2) {
+		gotoxy(a, b + 5);
+		cout << "PLAYER 1ÀÇ ½Â¸® !!!";
+	}
+	else if (p_n == 3) {
+		gotoxy(a, b + 5);
+		cout << "PLAYER 2ÀÇ ½Â¸® !!!";
+	}
 	gotoxy(a, b+10);
 	system("pause");
 }

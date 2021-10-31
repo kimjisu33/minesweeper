@@ -137,33 +137,34 @@ void infoDraw(int player) {
 	system("pause");
 }
 
-//GameBase game1(10, 10);
-//GameBase game2(30, 10);
-//void gameStartMenu(int player) {
-//	system("cls");
-//	if (player == 1) {
-//		//cout << "1인용 게임 화면~" << endl;
-//		sGameBase game(31,11);
-//		game.gameStart();
-//
-//	}
-//	else if (player == 2) {
-//		//cout << "2인용 게임 화면~" << endl;
-//		game1.showGameBoard();
-//		game2.showGameBoard();
-//		thread t1(gameStart1);
-//		thread t2(gameStart2);
-//		t1.join();
-//		t2.join();
-//			
-//	}
-//
-//}
-//
-//void gameStart1() {
-//	game1.movePlayer();
-//}
-//void gameStart2() {
-//	game2.movePlayer();
-//}
+
+void gameStartMenu(int player) {
+	system("cls");
+	if (player == 1) {
+		//cout << "1인용 게임 화면~" << endl;
+		GameBase game(1,31,11);
+		game.gameStart();
+
+	}
+	else if (player == 2) {
+		//cout << "2인용 게임 화면~" << endl;
+		thread t1([]() {
+			srand((unsigned)time(0));
+			GameBase game1(2, 15, 11);
+			game1.gameStart();
+			});
+		thread t2([]() {
+			this_thread::sleep_for(std::chrono::milliseconds(1000));
+			srand((unsigned)time(0));
+			GameBase game2(3, 45, 11);
+			game2.gameStart();
+			});
+
+		t1.join();
+		t2.join();
+			
+	}
+
+}
+
 

@@ -44,10 +44,8 @@ int keyControl(); //키보드
 void titleDraw(); //타이틀 그리기
 int menuDraw(int& player); //메뉴 화면
 void infoDraw(int player); //게임 설명
-//void gameStartMenu(int player); //게임 화면
+void gameStartMenu(int player); //게임 화면
 void setColor(int color, int bgcolor);
-void gameStart1();
-void gameStart2();
 
 class player {
 	//short life; //남은 목숨 (1인용 : 1개 / 2인용 : 2개)
